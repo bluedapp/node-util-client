@@ -47,6 +47,4 @@ export default abstract class Client<T extends ClientIntl> {
   }
 
   abstract buildClient (key: string): T
-
-  abstract cleanClient (key: string): void
 }
