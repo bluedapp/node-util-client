@@ -3,8 +3,8 @@ import CacheIntl from '@blued-core/cache-intl'
 
 const suggestInstanceCount = 3
 
-export interface ClientIntl {
-  client: Client,
+export interface ClientIntl<T = any> {
+  client: T,
   clean (): void
 }
 
