@@ -51,7 +51,7 @@ export function createSequelize ({
   username,
   password,
   database,
-  modelPath,
+  modelPath = '',
 }: SequelizeConfig) {
   const authConfig = {
     host: masterHost,
