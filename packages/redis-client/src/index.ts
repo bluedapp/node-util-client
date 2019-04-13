@@ -2,6 +2,7 @@ import { promisify } from 'util'
 import redis from 'redis'
 import { list } from 'redis-commands'
 import Client from '@blued-core/client'
+import { RedisPromisifyClient } from 'redis-fixer'
 
 export default class RedisClient extends Client {
   buildClient (key: string) {
@@ -37,7 +38,7 @@ function createRedisClient (host: string, port = 6379) {
  * @param {any} target RedisClient
  * @return {any}
  */
-function build (target: any) {
+function build (target: any): RedisPromisifyClient {
   list.forEach((method: any) => {
     const func = target[method]
     if (typeof func === 'function') {
