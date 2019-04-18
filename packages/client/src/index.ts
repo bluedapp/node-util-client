@@ -24,7 +24,7 @@ export default abstract class Client<T extends ClientIntl = ClientIntl> {
    * @param key 获取配置所需的标识
    * @param force 是否强制获取最新数据
    */
-  getClient (key: string, force?: boolean): Client {
+  getClient (key: string, force?: boolean): T {
     if (!force && this.cache.has(key)) {
       return this.cache.get(key)
     }
