@@ -2,9 +2,7 @@ import Raven from 'raven'
 import Client from '@blued-core/client'
 import { NormalConf } from '@blued-core/normal-conf'
 
-interface RavenClient { client: typeof Raven, clean: () => any }
-
-export default class extends Client<RavenClient> {
+export default class AAA extends Client<Raven> {
   conf: NormalConf
 
   buildClient (key: string) {
