@@ -12,7 +12,7 @@ interface SequelizeConfig {
   dev?: boolean
 }
 
-export default class MysqlClient extends Client {
+export default class MysqlClient extends Client<Sequelize> {
   conf: MysqlConf
 
   buildClient (key: string) {
