@@ -1,0 +1,6 @@
+src/*
+scripts/*
+.eslintignore
+.eslintrc
+commitlint.config.js
+tsconfig.json
