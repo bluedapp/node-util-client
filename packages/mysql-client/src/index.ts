@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import Client from '@blued-core/client'
+import { MysqlConf } from '@blued-core/mysql-conf'
 
 interface SequelizeConfig {
   masterHost: string
@@ -12,6 +13,8 @@ interface SequelizeConfig {
 }
 
 export default class MysqlClient extends Client {
+  conf: MysqlConf
+
   buildClient (key: string) {
     const {
       masterHost,
