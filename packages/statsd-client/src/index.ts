@@ -10,11 +10,9 @@ export enum StatsdType {
 }
 
 interface StatdClient {
-  client: {
-    timer(path: string, val: number): void,
-    counter(path: string, val: number): void
-  },
-  clean: () => any }
+  timer(path: string, val: number): void,
+  counter(path: string, val: number): void
+}
 
 export default class extends Client<StatdClient> {
   conf: NormalConf
