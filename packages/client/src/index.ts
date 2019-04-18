@@ -13,7 +13,8 @@ export default abstract class Client<T extends ClientIntl = ClientIntl> {
     protected conf: ConfIntl,
     protected cache: CacheIntl,
     protected interval = 1000,
-    protected keepInstanceCount = suggestInstanceCount
+    protected keepInstanceCount = suggestInstanceCount,
+    protected dev = false
   ) {
     if (keepInstanceCount < suggestInstanceCount) console.warn(`suggest: keep instance count larger than ${suggestInstanceCount}`)
   }
