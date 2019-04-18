@@ -8,7 +8,7 @@ export interface ClientIntl<T = any> {
   clean (): void
 }
 
-export default abstract class Client<T extends ClientIntl = ClientIntl> {
+export default abstract class Client<T> {
   constructor(
     protected conf: ConfIntl,
     protected cache: CacheIntl,
@@ -47,5 +47,5 @@ export default abstract class Client<T extends ClientIntl = ClientIntl> {
     }
   }
 
-  abstract buildClient (key: string): T
+  abstract buildClient (key: string): ClientIntl<T>
 }
