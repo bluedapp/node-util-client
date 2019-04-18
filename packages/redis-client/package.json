@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/redis-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -17,6 +17,7 @@
   "license": "ISC",
   "dependencies": {
     "@blued-core/client": "0.0.5",
+    "@blued-core/redis-conf": "0.0.2",
     "redis": "^2.8.0",
     "redis-commands": "^1.4.0",
     "typescript": "^3.4.3"
