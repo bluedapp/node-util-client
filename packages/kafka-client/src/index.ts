@@ -1,7 +1,15 @@
 import kafka, { Producer } from 'kafka-node'
 import Client from '@blued-core/client'
 
-export default class KafkaClient extends Client {
+interface Kafka {
+  send (topic: string, messages: string, otpions: {
+    key: string,
+    partition: number,
+    attributes: number
+  }): void
+}
+
+export default class KafkaClient extends Client<Kafka> {
   buildClient(key: string) {
     const confStr = this.conf.get(key)
     const client = new kafka.Client(confStr)
