@@ -5,7 +5,7 @@ import Client from '@blued-core/client'
 import { RedisConf } from '@blued-core/redis-conf'
 import { RedisPromisifyClient } from 'redis-fixer'
 
-export default class RedisClient extends Client {
+export default class RedisClient extends Client<RedisPromisifyClient> {
   conf: RedisConf
 
   buildClient (key: string) {
