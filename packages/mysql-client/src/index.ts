@@ -8,11 +8,10 @@ interface SequelizeConfig {
   database: string
   modelPath?: string
   slaveHost?: string[]
+  dev?: boolean
 }
 
 export default class MysqlClient extends Client {
-  public quiet: boolean = true
-
   buildClient (key: string) {
     const {
       masterHost,
@@ -30,6 +29,7 @@ export default class MysqlClient extends Client {
       password,
       database,
       modelPath,
+      dev: this.dev,
     })
 
     return {
@@ -52,6 +52,7 @@ export function createSequelize ({
   password,
   database,
   modelPath = '',
+  dev = false,
 }: SequelizeConfig) {
   const authConfig = {
     host: masterHost,
@@ -80,7 +81,7 @@ export function createSequelize ({
     },
     operatorsAliases: false,
     // 本地环境输出生成后的SQL语句
-    logging: !this.quiet && console.log,
+    logging: dev && console.log,
   } as any)
   //    ^ as any 是因为 sequelize-typescript 没有实现 replication 相关的东西
   // 这个影响仅仅是在编译期，所以 TS 会报错，使用 any 忽略它（代码运行不会出问题）
