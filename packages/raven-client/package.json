@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/raven-client",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "0.0.8",
+    "@blued-core/client": "^0.0.9",
     "raven": "^2.6.4",
     "typescript": "^3.4.3"
   },
