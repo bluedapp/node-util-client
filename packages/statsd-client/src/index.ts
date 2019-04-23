@@ -1,7 +1,6 @@
 import dgram from 'dgram'
 import os from 'os'
 import Client from '@blued-core/client'
-import { NormalConf } from '@blued-core/normal-conf'
 
 const localIp = os.hostname().replace(/[-.]/g, '_')
 export enum StatsdType {
@@ -9,14 +8,19 @@ export enum StatsdType {
   Timing = 'ms'
 }
 
-interface StatdClient {
+export interface StatdClient {
   timer(path: string, val: number): void,
   counter(path: string, val: number): void
 }
 
-export default class extends Client<StatdClient> {
-  conf: NormalConf
+export interface ConfInstance {
+  conf: string,
+  port: number,
+  group: string,
+  project: string
+}
 
+export default class extends Client<StatdClient, ConfInstance, ConfInstance> {
   buildClient (key: string) {
     const serverSocket = dgram.createSocket('udp4')
     const { conf, port, group, project } = this.conf.get(key)

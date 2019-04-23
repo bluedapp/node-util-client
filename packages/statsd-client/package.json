@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/statsd-client",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,8 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "0.0.7",
-    "@blued-core/normal-conf": "0.0.2",
+    "@blued-core/client": "^0.0.8",
     "typescript": "^3.4.3"
   },
   "devDependencies": {
@@ -33,7 +32,7 @@
     "eslint-config-blued-typescript": "^1.0.1",
     "eslint-plugin-import": "^2.17.2",
     "husky": "^1.3.1",
-    "mocha": "^6.1.3",
+    "mocha": "^6.1.4",
     "ts-node": "^8.1.0"
   },
   "husky": {
