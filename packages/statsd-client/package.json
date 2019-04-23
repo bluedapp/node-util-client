@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/statsd-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.8",
+    "@blued-core/client": "^0.0.9",
     "typescript": "^3.4.3"
   },
   "devDependencies": {
