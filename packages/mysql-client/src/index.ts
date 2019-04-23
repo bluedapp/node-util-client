@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
 import Client from '@blued-core/client'
-import { MysqlConf } from '@blued-core/mysql-conf'
+import { MysqlConfItem, MysqlConfInstance } from '@blued-core/mysql-conf'
 
 interface SequelizeConfig {
   masterHost: string
@@ -9,12 +9,10 @@ interface SequelizeConfig {
   database: string
   modelPath?: string
   slaveHost?: string[]
-  dev?: boolean
+  isLocal?: boolean
 }
 
-export default class MysqlClient extends Client<Sequelize> {
-  conf: MysqlConf
-
+export default class MysqlClient extends Client<Sequelize, MysqlConfInstance, MysqlConfItem> {
   buildClient (key: string) {
     const {
       masterHost,
@@ -32,7 +30,7 @@ export default class MysqlClient extends Client<Sequelize> {
       password,
       database,
       modelPath,
-      dev: this.dev,
+      isLocal: this.isLocal,
     })
 
     return {
@@ -55,7 +53,7 @@ export function createSequelize ({
   password,
   database,
   modelPath = '',
-  dev = false,
+  isLocal = false,
 }: SequelizeConfig) {
   const authConfig = {
     host: masterHost,
@@ -84,7 +82,7 @@ export function createSequelize ({
     },
     operatorsAliases: false,
     // 本地环境输出生成后的SQL语句
-    logging: dev && console.log,
+    logging: isLocal && console.log,
   } as any)
   //    ^ as any 是因为 sequelize-typescript 没有实现 replication 相关的东西
   // 这个影响仅仅是在编译期，所以 TS 会报错，使用 any 忽略它（代码运行不会出问题）
