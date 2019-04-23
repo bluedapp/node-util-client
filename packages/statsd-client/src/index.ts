@@ -8,7 +8,7 @@ export enum StatsdType {
   Timing = 'ms'
 }
 
-export interface StatdClient {
+export interface StatdClientInstance {
   timer(path: string, val: number): void,
   counter(path: string, val: number): void
 }
@@ -20,7 +20,7 @@ export interface ConfInstance {
   project: string
 }
 
-export default class extends Client<StatdClient, ConfInstance, ConfInstance> {
+export default class StatsdClient extends Client<StatdClientInstance, ConfInstance, ConfInstance> {
   buildClient (key: string) {
     const serverSocket = dgram.createSocket('udp4')
     const { conf, port, group, project } = this.conf.get(key)
@@ -63,3 +63,5 @@ function removeDot (str: string) {
 function translatePath (str: string) {
   return str.replace(/\//g, '.')
 }
+
+export type StatsdClientBuilder = () => ReturnType<typeof StatsdClient.prototype.getClient>
