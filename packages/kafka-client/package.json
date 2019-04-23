@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/kafka-client",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.8",
+    "@blued-core/client": "^0.0.9",
     "@blued-core/qconf-conf": "^0.0.2",
     "kafka-node": "^3.0.1",
     "typescript": "^3.4.3"
