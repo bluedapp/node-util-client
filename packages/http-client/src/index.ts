@@ -1,5 +1,5 @@
 import Client from '@blued-core/client'
-import { QconfHost } from '@blued-core/qconf-conf'
+import { QconfConfInstance, QconfConfItem } from '@blued-core/qconf-conf'
 import request, { RequestPromiseOptions } from 'request-promise-native'
 import { DataRequestError } from './error'
 import { getRandomRequestId } from './util'
@@ -10,9 +10,7 @@ type Config = RequestPromiseOptions & { url: string, requestId?: string }
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 
-export default class HttpClient extends Client<Request> {
-  conf: QconfHost
-
+export default class HttpClient extends Client<Request, QconfConfInstance, QconfConfItem> {
   buildClient (key: string) {
     const client = new Request(() => this.conf.get(key))
 
