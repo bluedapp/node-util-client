@@ -1,7 +1,7 @@
 import Raven from 'raven'
 import Client from '@blued-core/client'
 
-export default class A extends Client<typeof Raven, string, {
+export default class RavenClient extends Client<typeof Raven, string, {
   qconf: string
 } | string> {
   buildClient (key: string) {
@@ -14,3 +14,5 @@ export default class A extends Client<typeof Raven, string, {
     }
   }
 }
+
+export type RavenClientBuilder = () => ReturnType<typeof RavenClient.prototype.getClient>
