@@ -3,18 +3,33 @@ import CacheIntl from '@blued-core/cache-intl'
 
 const suggestInstanceCount = 3
 
-export interface ClientIntl<T = any> {
+export interface ClientResourceIntl<T = any> {
   client: T,
   clean (): void
 }
 
-export default abstract class Client<T> {
+export interface ClientIntl<T extends any = any> {
+  conf: ConfIntl
+  cache: CacheIntl
+  interval?: number
+  keepInstanceCount?: number
+  isLocal?: boolean
+
+  getClient (key: string, force?: boolean): T
+  buildClient (key: string): ClientResourceIntl<T>
+}
+
+export default abstract class Client<
+  T extends any = any,
+  Type extends any = any,
+  Item extends any = any
+> implements ClientIntl<T> {
   constructor(
-    protected conf: ConfIntl,
-    protected cache: CacheIntl,
-    protected interval = 1000,
-    protected keepInstanceCount = suggestInstanceCount,
-    protected dev = false
+    public conf: ConfIntl<Type, Item>,
+    public cache: CacheIntl<T>,
+    public interval = 1000,
+    public keepInstanceCount = suggestInstanceCount,
+    public isLocal = false
   ) {
     if (keepInstanceCount < suggestInstanceCount) console.warn(`suggest: keep instance count larger than ${suggestInstanceCount}`)
   }
@@ -47,5 +62,5 @@ export default abstract class Client<T> {
     }
   }
 
-  abstract buildClient (key: string): ClientIntl<T>
+  abstract buildClient (key: string): ClientResourceIntl<T>
 }
