@@ -27,9 +27,9 @@ export default abstract class Client<
   constructor(
     public conf: ConfIntl<Type, Item>,
     public cache: CacheIntl<T>,
+    public isLocal = false,
     public interval = 1000,
-    public keepInstanceCount = suggestInstanceCount,
-    public isLocal = false
+    public keepInstanceCount = suggestInstanceCount
   ) {
     if (keepInstanceCount < suggestInstanceCount) console.warn(`suggest: keep instance count larger than ${suggestInstanceCount}`)
   }
