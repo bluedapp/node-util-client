@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.9",
+    "@blued-core/client": "^0.0.10",
     "@blued-core/qconf-conf": "^0.0.2",
     "kafka-node": "^3.0.1",
     "typescript": "^3.4.3"
