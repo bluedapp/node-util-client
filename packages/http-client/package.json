@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/http-client",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.9",
+    "@blued-core/client": "^0.0.10",
     "@blued-core/qconf-conf": "^0.0.2",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
