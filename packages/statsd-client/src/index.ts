@@ -10,7 +10,7 @@ export enum StatsdType {
 }
 
 export interface ConfInstance {
-  conf: string,
+  host: string,
   port: number,
   group: string,
   project: string
@@ -21,7 +21,7 @@ export default class StatsdClient
   implements PerformanceClientIntl {
   buildClient (key: string) {
     const serverSocket = dgram.createSocket('udp4')
-    const { conf, port, group, project } = this.conf.get(key)
+    const { host, port, group, project } = this.conf.get(key)
 
     let client = {
       timer(path: string, val: number) {
@@ -41,7 +41,7 @@ export default class StatsdClient
 
     function sendMessage (path: string, val: number, type: StatsdType) {
       const msg = Buffer.from(`${removeDot(group)}.${removeDot(project)}.${localIp}${translatePath(path)}:${val}|${type}`)
-      serverSocket.send(msg, port, conf)
+      serverSocket.send(msg, port, host)
     }
   }
 }
