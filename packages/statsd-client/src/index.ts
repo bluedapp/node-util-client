@@ -1,16 +1,12 @@
 import dgram from 'dgram'
 import os from 'os'
 import Client from '@blued-core/client'
+import { PerformanceClientInstance, PerformanceClientIntl } from '@blued-core/client-intl'
 
 const localIp = os.hostname().replace(/[-.]/g, '_')
 export enum StatsdType {
   Counting = 'c',
   Timing = 'ms'
-}
-
-export interface StatdClientInstance {
-  timer(path: string, val: number): void,
-  counter(path: string, val: number): void
 }
 
 export interface ConfInstance {
@@ -20,7 +16,9 @@ export interface ConfInstance {
   project: string
 }
 
-export default class StatsdClient extends Client<StatdClientInstance, ConfInstance, ConfInstance> {
+export default class StatsdClient
+  extends Client<PerformanceClientInstance, ConfInstance, ConfInstance>
+  implements PerformanceClientIntl {
   buildClient (key: string) {
     const serverSocket = dgram.createSocket('udp4')
     const { conf, port, group, project } = this.conf.get(key)
@@ -63,5 +61,3 @@ function removeDot (str: string) {
 function translatePath (str: string) {
   return str.replace(/\//g, '.')
 }
-
-export type StatsdClientBuilder = () => ReturnType<typeof StatsdClient.prototype.getClient>
