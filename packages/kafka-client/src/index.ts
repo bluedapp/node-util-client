@@ -9,6 +9,16 @@ export interface Kafka {
   }): void
 }
 
+export interface KafkaConfigs {
+  key: string
+  partition: number
+  attributes: number
+}
+
+const defaultKey = ''
+const defaultPartition = 0
+const defaultAttributes = 2
+
 export default class KafkaClient extends Client<Kafka, string> {
   buildClient(key: string) {
     const confStr = this.conf.get(key)
@@ -18,13 +28,13 @@ export default class KafkaClient extends Client<Kafka, string> {
     return {
       client: {
         send (topic: string, messages: string, {
-          key = '',
-          partition = 0,
-          attributes = 2,
-        }: {
-          key: string,
-          partition: number,
-          attributes: number
+          key = defaultKey,
+          partition = defaultPartition,
+          attributes = defaultAttributes,
+        }: KafkaConfigs = {
+          key: defaultKey,
+          partition: defaultPartition,
+          attributes: defaultAttributes,
         }) {
           const payloads = {
             topic,
