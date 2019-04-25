@@ -2,10 +2,14 @@ import { promisify } from 'util'
 import redis from 'redis'
 import { list } from 'redis-commands'
 import Client from '@blued-core/client'
-import { RedisConfInstance, RedisConfItem } from '@blued-core/redis-conf'
 import { RedisPromisifyClient } from 'redis-fixer'
 
-export default class RedisClient extends Client<RedisPromisifyClient, RedisConfInstance, RedisConfItem> {
+export interface RedisConfInstance {
+  host: string
+  port: number
+}
+
+export default class RedisClient extends Client<RedisPromisifyClient, RedisConfInstance> {
   buildClient (key: string) {
     const { host, port } = this.conf.get(key)
     const client = createRedisClient(host, Number(port))
