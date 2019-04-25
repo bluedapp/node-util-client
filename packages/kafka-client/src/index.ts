@@ -2,7 +2,7 @@ import kafka, { Producer } from 'kafka-node'
 import Client from '@blued-core/client'
 
 export interface Kafka {
-  send (topic: string, messages: string, otpions: {
+  send (topic: string, messages: string, otpions?: {
     key: string,
     partition: number,
     attributes: number
