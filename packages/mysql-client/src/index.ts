@@ -21,7 +21,7 @@ export interface MysqlConfInstance {
 }
 
 export type Mysql = Sequelize & {
-  query<T extends any = any> (sql: string): Promise<T[]>
+  query<T extends any = any> (sql: string): Promise<[T[], any[]]>
   close (): void
 }
 
