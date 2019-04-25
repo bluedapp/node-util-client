@@ -21,7 +21,8 @@ export interface MysqlConfInstance {
 }
 
 export type Mysql = Sequelize & {
-  query<T extends any = any> (sql: string): Promise<[T[], any[]]>
+  query<T extends any = any> (sql: string): Promise<T[]>
+  originalQuery<T extends any = any> (sql: string): Promise<[T[], any[]]>
   close (): void
 }
 
@@ -45,6 +46,16 @@ export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
       modelPath,
       isLocal: this.isLocal,
     })
+
+    const originalQuery = client.query.bind(client)
+
+    client.query = async (sql: string) => {
+      const [res] = await originalQuery(sql)
+
+      return res
+    }
+
+    client.originalQuery = originalQuery
 
     return {
       client,
