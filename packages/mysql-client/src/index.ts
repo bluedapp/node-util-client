@@ -20,7 +20,12 @@ export interface MysqlConfInstance {
   modelPath: any
 }
 
-export default class MysqlClient extends Client<Sequelize, MysqlConfInstance> {
+export type Mysql = Sequelize & {
+  query<T extends any = any> (sql: string): Promise<T[]>
+  close (): void
+}
+
+export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
   buildClient (key: string) {
     const {
       masterHost,
@@ -95,5 +100,5 @@ export function createSequelize ({
   //    ^ as any 是因为 sequelize-typescript 没有实现 replication 相关的东西
   // 这个影响仅仅是在编译期，所以 TS 会报错，使用 any 忽略它（代码运行不会出问题）
 
-  return sequelize as any
+  return sequelize as Mysql
 }
