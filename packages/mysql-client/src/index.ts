@@ -1,5 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
-import { QueryTypes } from 'sequelize'
+import { QueryOptions } from 'sequelize'
 import Client from '@blued-core/client'
 
 export interface SequelizeConfig {
@@ -21,10 +21,10 @@ export interface MysqlConfInstance {
   modelPath: any
 }
 
-export { QueryTypes }
+export { QueryOptions }
 
 export type Mysql = Sequelize & {
-  query (sql: string, options?: QueryTypes): Promise<any>
+  query (sql: string, options?: QueryOptions): Promise<any>
   close (): void
 }
 
