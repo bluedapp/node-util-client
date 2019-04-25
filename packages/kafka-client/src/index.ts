@@ -10,9 +10,9 @@ export interface Kafka {
 }
 
 export interface KafkaConfigs {
-  key: string
-  partition: number
-  attributes: number
+  key?: string
+  partition?: number
+  attributes?: number
 }
 
 const defaultKey = ''
