@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize-typescript'
+import { QueryTypes as _QueryTypes } from 'sequelize'
 import Client from '@blued-core/client'
 
 export interface SequelizeConfig {
@@ -20,9 +21,10 @@ export interface MysqlConfInstance {
   modelPath: any
 }
 
+export const QueryTypes = _QueryTypes
+
 export type Mysql = Sequelize & {
-  query<T extends any = any> (sql: string): Promise<T[]>
-  originalQuery<T extends any = any> (sql: string): Promise<[T[], any[]]>
+  query (sql: string, options: _QueryTypes): Promise<any>
   close (): void
 }
 
@@ -46,16 +48,6 @@ export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
       modelPath,
       isLocal: this.isLocal,
     })
-
-    const originalQuery = client.query.bind(client)
-
-    client.query = async (sql: string) => {
-      const [res] = await originalQuery(sql)
-
-      return res
-    }
-
-    client.originalQuery = originalQuery
 
     return {
       client,
