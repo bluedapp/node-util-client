@@ -17,7 +17,7 @@ export interface ConfInstance {
 }
 
 export default class StatsdClient
-  extends Client<PerformanceClientInstance, ConfInstance, ConfInstance>
+  extends Client<PerformanceClientInstance, ConfInstance>
   implements PerformanceClientIntl {
   buildClient (key: string) {
     const serverSocket = dgram.createSocket('udp4')
