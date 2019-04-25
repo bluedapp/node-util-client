@@ -1,8 +1,7 @@
 import { Sequelize } from 'sequelize-typescript'
 import Client from '@blued-core/client'
-import { MysqlConfItem, MysqlConfInstance } from '@blued-core/mysql-conf'
 
-interface SequelizeConfig {
+export interface SequelizeConfig {
   masterHost: string
   username: string
   password: string
@@ -12,7 +11,16 @@ interface SequelizeConfig {
   isLocal?: boolean
 }
 
-export default class MysqlClient extends Client<Sequelize, MysqlConfInstance, MysqlConfItem> {
+export interface MysqlConfInstance {
+  masterHost: string
+  slaveHost: string[]
+  username: string
+  password: string
+  database: any
+  modelPath: any
+}
+
+export default class MysqlClient extends Client<Sequelize, MysqlConfInstance> {
   buildClient (key: string) {
     const {
       masterHost,
