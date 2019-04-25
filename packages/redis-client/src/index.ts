@@ -6,7 +6,7 @@ import { RedisPromisifyClient } from 'redis-fixer'
 
 export interface RedisConfInstance {
   host: string
-  port: number
+  port: string | number
 }
 
 export default class RedisClient extends Client<RedisPromisifyClient, RedisConfInstance> {
