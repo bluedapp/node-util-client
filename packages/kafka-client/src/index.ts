@@ -1,8 +1,7 @@
 import kafka, { Producer } from 'kafka-node'
 import Client from '@blued-core/client'
-import { QconfConfInstance, QconfConfItem } from '@blued-core/qconf-conf'
 
-interface Kafka {
+export interface Kafka {
   send (topic: string, messages: string, otpions: {
     key: string,
     partition: number,
@@ -10,7 +9,7 @@ interface Kafka {
   }): void
 }
 
-export default class KafkaClient extends Client<Kafka, QconfConfInstance, QconfConfItem> {
+export default class KafkaClient extends Client<Kafka, string> {
   buildClient(key: string) {
     const confStr = this.conf.get(key)
     const client = new kafka.Client(confStr)
