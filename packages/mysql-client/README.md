@@ -26,9 +26,9 @@ async function main () {
   // 如不想安装 Cache ，则可使用 new Map() 代替
   const mysqlClient = new MysqlClient(mysqlConf, new Cache())
 
-  const payMysql = mysqlClient.getClient('mysql1')
+  const mysql = mysqlClient.getClient('mysql1')
 
-  const results = await payMysql.query(
+  const results = await mysql.query(
     `SELECT col1, col2 FROM table LIMIT 10;`,
     { type: QueryTypes.SELECT }
   )
