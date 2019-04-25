@@ -15,15 +15,48 @@ export interface KafkaConfigs {
   attributes?: number
 }
 
+export interface Payloads {
+  topic: string
+  messages: string
+  key: string
+  partition: number
+  attributes: number
+}
+
 const defaultKey = ''
 const defaultPartition = 0
 const defaultAttributes = 2
+
+let clientStatus = false
+const messageBuffer: Payloads[] = []
 
 export default class KafkaClient extends Client<Kafka, string> {
   buildClient(key: string) {
     const confStr = this.conf.get(key)
     const client = new kafka.Client(confStr)
     const producer = new Producer(client)
+
+    // only listen event when client not ready
+    if (!clientStatus) {
+      const readyEventHandler = () => {
+        if (!clientStatus) {
+          clientStatus = true
+
+          if (messageBuffer.length > 0) {
+            messageBuffer.forEach(message => {
+              producer.send([message], (error: Error) => {
+                if (error) console.error(error)
+              })
+            })
+
+            // clean buffer when send message complete
+            messageBuffer.length = 0
+          }
+        }
+      }
+
+      client.on('ready', readyEventHandler)
+    }
 
     return {
       client: {
@@ -36,7 +69,7 @@ export default class KafkaClient extends Client<Kafka, string> {
           partition: defaultPartition,
           attributes: defaultAttributes,
         }) {
-          const payloads = {
+          const payloads: Payloads = {
             topic,
             // multi messages should be a array, single message can be just a string or a KeyedMessage instance
             messages,
@@ -47,15 +80,22 @@ export default class KafkaClient extends Client<Kafka, string> {
             // default: 0
             attributes,
           }
-          if (producer) {
+          if (clientStatus) {
             producer.send([payloads], (error: Error) => {
               if (error) console.error(error)
             })
+          } else {
+            messageBuffer.push(payloads)
           }
         },
       },
       clean () {
+        // force clean buffer when rebuild client
+        if (!clientStatus && messageBuffer.length > 0) {
+          messageBuffer.length = 0
+        }
         producer.close()
+        client.close()
       },
     }
   }
