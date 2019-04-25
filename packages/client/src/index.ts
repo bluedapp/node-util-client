@@ -5,12 +5,13 @@ import { ClientIntl, ClientResourceIntl } from '@blued-core/client-intl'
 const suggestInstanceCount = 3
 
 export default abstract class Client<
+  // client 返回的类型
   T extends any = any,
-  Type extends any = any,
-  Item extends any = any
+  // client 创建所需配置返回的数据结构，同时也是缓存存储的类型
+  Type extends any = any
 > implements ClientIntl<T> {
   constructor(
-    public conf: ConfIntl<Type, Item>,
+    public conf: ConfIntl<Type>,
     public cache: CacheIntl<T>,
     public isLocal = false,
     public interval = 1000,
