@@ -20,7 +20,7 @@ export default class HttpClient extends Client<Request, string> {
   }
 }
 
-class Request {
+export class Request {
   /**
    * get 请求
    * @param {string} uri    请求的相对路径
