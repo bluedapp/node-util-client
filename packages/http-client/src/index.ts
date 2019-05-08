@@ -4,7 +4,7 @@ import { DataRequestError } from './error'
 import { getRandomRequestId } from './util'
 import buildPath, { removeBorderSlash } from './url-util'
 
-type Config = RequestPromiseOptions & { url: string, requestId?: string }
+export type Config = RequestPromiseOptions & { url: string, requestId?: string }
 
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
