@@ -9,7 +9,13 @@ export class DataRequestError extends Error {
    * @param  {string}                         message   错误信息
    * @param  {...any}                         arg       普通Error调用时传递的参数
    */
-  constructor (public requestId: string = getRandomRequestId(), message: string) {
-    super(`request_id: [${requestId}] message: [${message}]`)
+  constructor (
+    public requestId: string = getRandomRequestId(),
+    public response: any,
+    public statusCode: number,
+    public errorCode: number,
+    public message: string
+  ) {
+    super(`request_id: [${requestId}] status: [${statusCode}] message: [${message}]`)
   }
 }

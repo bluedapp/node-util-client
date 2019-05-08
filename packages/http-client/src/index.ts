@@ -122,9 +122,25 @@ export class Request {
         return results
       }
 
-      throw new DataRequestError(requestId, `url:[${url}] code:[${results.code}] message:[${results.message}]`)
+      throw new DataRequestError(
+        requestId,
+        results.data,
+        results.code,
+        results.data ? results.data.code : 500,
+        `url:[${url}] code:[${results.code}] message:[${results.message}]`
+      )
     } catch (e) {
-      throw new DataRequestError(requestId, `url:[${url}] message:[${e.message}]`)
+      if (e.requestId) {
+        throw e
+      } else {
+        throw new DataRequestError(
+          requestId,
+          e.error,
+          e.statusCode,
+          e.error ? e.error.code : 500,
+          `url:[${url}] message:[${e.message}]`
+        )
+      }
     }
   }
 }
