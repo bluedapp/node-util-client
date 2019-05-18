@@ -1115,6 +1115,6 @@ export interface RedisPromisifyClient {
   /**
    * Get the score associated with the given member in a sorted set.
    */
-  zscore(key: string, member: string | number): Promise<number>
-  ZSCORE(key: string, member: string | number): Promise<number>
+  zscore(key: string, member: string | number): Promise<string>
+  ZSCORE(key: string, member: string | number): Promise<string>
 }
