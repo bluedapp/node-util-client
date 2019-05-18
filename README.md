@@ -11,4 +11,4 @@
 - [statsd](packages/statsd-client)
 
 > 接口的定义：[client-intl](packages/client-intl)  
-> 抽象类的实现：[client](pacakges/client)
+> 抽象类的实现：[client](packages/client)
