@@ -7,7 +7,6 @@
     "test": "mocha -r ts-node/register test/**/*.spec.ts --exit",
     "build": "rm -rf dist && tsc",
     "watch": "tsc -w",
-    "lint": "bash ./scripts/lint-staged-files.sh",
     "start": "NODE_ENV=test node dist",
     "start-pro": "NODE_ENV=local node dist",
     "prepare": "npm run build"
