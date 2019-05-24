@@ -24,9 +24,9 @@ export interface PerformanceClientInstance {
 
 export type PerformanceClientIntl = ClientIntl<PerformanceClientInstance>
 
-export interface ErrorReportClientInstance {
+export interface ExceptionReportClientInstance {
   captureException (e: Error, callback?: Function): void
   captureMessage (message: string): void
 }
 
-export type ErrorReportClientIntl = ClientIntl<ErrorReportClientInstance>
+export type ExceptionReportClientIntl = ClientIntl<ExceptionReportClientInstance>
