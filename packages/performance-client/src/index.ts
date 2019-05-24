@@ -16,7 +16,7 @@ export interface ConfInstance {
   project: string
 }
 
-export default class StatsdClient
+export default class PerformanceClient
   extends Client<PerformanceClientInstance, ConfInstance>
   implements PerformanceClientIntl {
   buildClient (key: string) {
