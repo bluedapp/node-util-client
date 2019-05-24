@@ -2,7 +2,7 @@ import { promisify } from 'util'
 import redis from 'redis'
 import { list } from 'redis-commands'
 import Client from '@blued-core/client'
-import { RedisPromisifyClient } from 'redis-fixer'
+import { RedisPromisifyClient } from './types/redis-fixer'
 
 export interface RedisConfInstance {
   host: string
