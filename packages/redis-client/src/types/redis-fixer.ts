@@ -323,8 +323,8 @@ export interface RedisPromisifyClient {
   /**
    * Incrementally iterate Set elements.
    */
-  sscan: OverloadedKeyCommand<string, [string, string[]], string, number>
-  SSCAN: OverloadedKeyCommand<string, [string, string[]], string, number>
+  sscan: OverloadedKeyCommand<string, [string, string[]]>
+  SSCAN: OverloadedKeyCommand<string, [string, string[]]>
 
   /**
    * Incrementally iterate hash fields and associated values.
