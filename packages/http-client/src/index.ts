@@ -118,7 +118,7 @@ export class Request {
         ...config,
       })
 
-      if (results.code === 200) {
+      if (Number(results.code) === 200) {
         return results
       }
 
