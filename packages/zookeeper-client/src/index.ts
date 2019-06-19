@@ -5,12 +5,16 @@ export interface ZookeeperClient {
   getData: (path: string) => Promise<string>
   getChildren: (path: string) => Promise<string[]>
   setData: (path: string, value: string | number) => Promise<void>
+  create: (path: string, value: string | number) => Promise<void>
+  remove: (path: string) => Promise<void>
 }
 
 enum TaskType {
   GetData,
   GetChildren,
   SetData,
+  Create,
+  Remove,
 }
 
 export type TaskItem = {
@@ -18,9 +22,9 @@ export type TaskItem = {
   reject: Function
   path: string
 } & ({
-  type: TaskType.GetData | TaskType.GetChildren
+  type: TaskType.GetData | TaskType.GetChildren | TaskType.Remove
 } | {
-  type: TaskType.SetData
+  type: TaskType.SetData | TaskType.Create
   value: string | number
 })
 
@@ -69,6 +73,28 @@ export default class ExceptionReportClient extends Client<ZookeeperClient, strin
           })
         }
       }),
+      create: (path: string, value: string | number) => new Promise((resolve, reject) => {
+        if (!init) {
+          buffer.push({ resolve, reject, path, type: TaskType.Create, value })
+        } else {
+          client.create(path, Buffer.from(String(value)), error => {
+            if (error) return reject(error)
+
+            resolve()
+          })
+        }
+      }),
+      remove: (path: string) => new Promise((resolve, reject) => {
+        if (!init) {
+          buffer.push({ resolve, reject, path, type: TaskType.Remove })
+        } else {
+          client.remove(path, error => {
+            if (error) return reject(error)
+
+            resolve()
+          })
+        }
+      }),
     }
 
     client.once('connected', () => {
@@ -91,6 +117,8 @@ export default class ExceptionReportClient extends Client<ZookeeperClient, strin
               return taskItem.resolve(await clientUtil.getChildren(taskItem.path))
             case TaskType.SetData:
               return taskItem.resolve(await clientUtil.setData(taskItem.path, taskItem.value))
+            case TaskType.Create:
+              return taskItem.resolve(await clientUtil.create(taskItem.path, taskItem.value))
             default: throw new Error(`invalid case: ${type}`)
             }
           } catch (e) {
