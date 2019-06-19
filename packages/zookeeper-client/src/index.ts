@@ -7,6 +7,7 @@ export interface ZookeeperClient {
   setData: (path: string, value: string | number) => Promise<void>
   create: (path: string, value: string | number) => Promise<void>
   remove: (path: string) => Promise<void>
+  exists: (path: string) => Promise<boolean>
 }
 
 enum TaskType {
@@ -15,6 +16,7 @@ enum TaskType {
   SetData,
   Create,
   Remove,
+  Exists,
 }
 
 export type TaskItem = {
@@ -22,7 +24,7 @@ export type TaskItem = {
   reject: Function
   path: string
 } & ({
-  type: TaskType.GetData | TaskType.GetChildren | TaskType.Remove
+  type: TaskType.GetData | TaskType.GetChildren | TaskType.Remove | TaskType.Exists
 } | {
   type: TaskType.SetData | TaskType.Create
   value: string | number
@@ -92,6 +94,17 @@ export default class ExceptionReportClient extends Client<ZookeeperClient, strin
             if (error) return reject(error)
 
             resolve()
+          })
+        }
+      }),
+      exists: (path: string) => new Promise((resolve, reject) => {
+        if (!init) {
+          buffer.push({ resolve, reject, path, type: TaskType.Exists })
+        } else {
+          client.exists(path, (error, stat) => {
+            if (error) return reject(error)
+
+            resolve(!!stat)
           })
         }
       }),

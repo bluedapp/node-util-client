@@ -40,3 +40,11 @@ await client.remove('/patha/pathc')
 console.log(await client.getChildren('/patha')) // => ['pathb']
 console.log(await client.getData('/patha/pathb')) // => '1'
 ```
+
+### remove 
+
+```typescript
+await client.create('/patha/pathb', 1)
+console.log(await client.exists('/patha/pathb')) // => true
+console.log(await client.exists('/patha/pathc')) // => false
+```
