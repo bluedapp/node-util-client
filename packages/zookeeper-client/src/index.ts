@@ -132,6 +132,10 @@ export default class ExceptionReportClient extends Client<ZookeeperClient, strin
               return taskItem.resolve(await clientUtil.setData(taskItem.path, taskItem.value))
             case TaskType.Create:
               return taskItem.resolve(await clientUtil.create(taskItem.path, taskItem.value))
+            case TaskType.Remove:
+              return taskItem.resolve(await clientUtil.remove(taskItem.path))
+            case TaskType.Exists:
+              return taskItem.resolve(await clientUtil.exists(taskItem.path))
             default: throw new Error(`invalid case: ${type}`)
             }
           } catch (e) {
