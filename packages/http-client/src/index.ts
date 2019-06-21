@@ -118,17 +118,7 @@ export class Request {
         ...config,
       })
 
-      if (Number(results.code) === 200) {
-        return results
-      }
-
-      throw new DataRequestError(
-        requestId,
-        results.data,
-        results.code,
-        results.data ? results.data.code : 500,
-        `url:[${url}] code:[${results.code}] message:[${results.message}]`
-      )
+      return results
     } catch (e) {
       if (e.requestId) {
         throw e
