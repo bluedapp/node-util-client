@@ -29,12 +29,14 @@ const defaultAttributes = 2
 
 let clientStatus = false
 const messageBuffer: Payloads[] = []
+let client = null
+let producer: Producer | null = null
 
 export default class KafkaClient extends Client<Kafka, string> {
   buildClient(key: string) {
     const confStr = this.conf.get(key)
-    const client = new kafka.Client(confStr)
-    const producer = new Producer(client)
+    client = new kafka.Client(confStr)
+    producer = new Producer(client)
 
     // only listen event when client not ready
     if (!clientStatus) {
@@ -43,6 +45,8 @@ export default class KafkaClient extends Client<Kafka, string> {
           clientStatus = true
 
           if (messageBuffer.length > 0) {
+            if (producer === null) return
+
             messageBuffer.forEach(message => {
               producer.send([message], (error: Error) => {
                 if (error) console.error(error)
@@ -94,8 +98,8 @@ export default class KafkaClient extends Client<Kafka, string> {
         if (!clientStatus && messageBuffer.length > 0) {
           messageBuffer.length = 0
         }
-        producer.close()
-        client.close()
+        // producer.close()
+        // client.close()
       },
     }
   }
