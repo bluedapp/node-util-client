@@ -20,6 +20,7 @@
     "typescript": "^3.4.3"
   },
   "devDependencies": {
+    "@blued-core/normal-conf": "0.0.3",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/chai": "^4.1.7",

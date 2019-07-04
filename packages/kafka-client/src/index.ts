@@ -1,4 +1,4 @@
-import kafka, { Producer } from 'kafka-node'
+import { Client as BaseClient, Producer as BaseProducer } from 'kafka-node'
 import Client from '@blued-core/client'
 
 export interface Kafka {
@@ -29,14 +29,19 @@ const defaultAttributes = 2
 
 let clientStatus = false
 const messageBuffer: Payloads[] = []
-let client = null
-let producer: Producer | null = null
+let client: BaseClient | null = null
+let producer: BaseProducer | null = null
 
 export default class KafkaClient extends Client<Kafka, string> {
   buildClient(key: string) {
     const confStr = this.conf.get(key)
-    client = new kafka.Client(confStr)
-    producer = new Producer(client)
+
+    if (client === null) {
+      client = new BaseClient(confStr)
+    }
+    if (producer === null) {
+      producer = new BaseProducer(client)
+    }
 
     // only listen event when client not ready
     if (!clientStatus) {
@@ -59,7 +64,7 @@ export default class KafkaClient extends Client<Kafka, string> {
         }
       }
 
-      client.on('ready', readyEventHandler)
+      producer.on('ready', readyEventHandler)
     }
 
     return {
