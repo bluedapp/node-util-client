@@ -9,13 +9,15 @@
     "watch": "tsc -w",
     "start": "NODE_ENV=test node dist",
     "start-pro": "NODE_ENV=local node dist",
-    "prepare": "npm run build"
+    "prepare": "npm run build",
+    "fix": "cd ./node_modules/node-qconf/build/Release/ && install_name_tool -change libqconf.dylib /usr/local/qconf/lib/libqconf.dylib ./qconf.node"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@blued-core/client": "^0.0.11",
+    "@blued-core/qconf-conf": "0.0.5",
     "request": "^2.88.0",
     "request-promise-native": "^1.0.7",
     "typescript": "^3.4.3"
@@ -24,7 +26,7 @@
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.6",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^11.13.5",
     "@types/request": "^2.48.1",
     "@types/request-promise-native": "^1.0.15",
