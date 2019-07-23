@@ -101,7 +101,7 @@ export class Request {
     }
   ) {
     accessMethod.forEach((method: 'get' | 'post' | 'put' | 'delete') => {
-      this[method] = (config: Config) => this.reqHooks({
+      this[method] = (config: Config) => this.superReq({
         ...config,
         method: method.toUpperCase(),
       });
@@ -113,7 +113,7 @@ export class Request {
    * request lifecycle  
    * promise chain  | ...requestInterceptors -> req -> ...responseInterceptors |
    */
-  private reqHooks (config: Config) {
+  private superReq (config: Config) {
     const dispatchRequest = (config: Config) => new Promise(async (resolve, reject) => {
       try {
         const res = await this.req(config)
