@@ -114,16 +114,8 @@ export class Request {
    * promise chain  | ...requestInterceptors -> req -> ...responseInterceptors |
    */
   private superReq (config: Config) {
-    const dispatchRequest = (config: Config) => new Promise(async (resolve, reject) => {
-      try {
-        const res = await this.req(config)
-        resolve(res)
-      } catch (error) {
-        reject(error)
-      }
-    })
 
-    const chain: [any, any] = [dispatchRequest, undefined]
+    const chain: [any, any] = [this.req.bind(this), undefined]
     let promise = Promise.resolve(config)
 
     this.interceptors.request.forEach(function unshiftRequesetInterceptors (interceptor: IThenParmas) {
