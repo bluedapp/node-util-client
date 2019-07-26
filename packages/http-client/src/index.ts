@@ -1,5 +1,6 @@
 import Client from '@blued-core/client'
 import request, { RequestPromiseOptions } from 'request-promise-native'
+import InterceptorManager, { IThenParmas } from './interceptorManager'
 import { DataRequestError } from './error'
 import { getRandomRequestId } from './util'
 import buildPath, { removeBorderSlash } from './url-util'
@@ -8,10 +9,17 @@ export type Config = RequestPromiseOptions & { url: string, requestId?: string }
 
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
-
 export default class HttpClient extends Client<Request, string> {
+  interceptors : {
+    request:InterceptorManager
+    response:InterceptorManager
+  } = {
+    request: new InterceptorManager(),
+    response: new InterceptorManager()
+  }
+
   buildClient (key: string) {
-    const client = new Request(() => this.conf.get(key))
+    const client = new Request(() => this.conf.get(key), this.interceptors)
 
     return {
       client,
@@ -85,14 +93,44 @@ export class Request {
    */
   public deleteData: (config: Config) => Promise<any>
 
-  constructor(private getHost: () => string) {
+  constructor(
+    private getHost: () => string, 
+    private interceptors: {
+      request:InterceptorManager
+      response:InterceptorManager
+    }
+  ) {
     accessMethod.forEach((method: 'get' | 'post' | 'put' | 'delete') => {
-      this[method] = (config: Config) => this.req({
+      this[method] = (config: Config) => this.superReq({
         ...config,
         method: method.toUpperCase(),
       });
       (this as any)[`${method}Data`] = data(this[method])
     })
+  }
+
+  /**
+   * request lifecycle  
+   * promise chain  | ...requestInterceptors -> req -> ...responseInterceptors |
+   */
+  private superReq (config: Config) {
+
+    const chain: [any, any] = [this.req.bind(this), undefined]
+    let promise = Promise.resolve(config)
+
+    this.interceptors.request.forEach(function unshiftRequesetInterceptors (interceptor: IThenParmas) {
+      chain.unshift(interceptor.fulfilled, interceptor.rejected)
+    })
+    
+    this.interceptors.response.forEach(function pushResponseInterceptors (interceptor: IThenParmas) {
+      chain.push(interceptor.fulfilled, interceptor.rejected)
+    })
+
+    while (chain.length) {
+      promise = promise.then(chain.shift(), chain.shift())
+    }
+
+    return promise
   }
 
   /**
