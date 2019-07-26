@@ -10,12 +10,12 @@ export type Config = RequestPromiseOptions & { url: string, requestId?: string }
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 export default class HttpClient extends Client<Request, string> {
-  interceptors : {
-    request:InterceptorManager
-    response:InterceptorManager
+  interceptors: {
+    request: InterceptorManager
+    response: InterceptorManager
   } = {
     request: new InterceptorManager(),
-    response: new InterceptorManager()
+    response: new InterceptorManager(),
   }
 
   buildClient (key: string) {
@@ -94,10 +94,10 @@ export class Request {
   public deleteData: (config: Config) => Promise<any>
 
   constructor(
-    private getHost: () => string, 
+    private getHost: () => string,
     private interceptors: {
-      request:InterceptorManager
-      response:InterceptorManager
+      request: InterceptorManager
+      response: InterceptorManager
     }
   ) {
     accessMethod.forEach((method: 'get' | 'post' | 'put' | 'delete') => {
@@ -110,19 +110,18 @@ export class Request {
   }
 
   /**
-   * request lifecycle  
+   * request lifecycle
    * promise chain  | ...requestInterceptors -> req -> ...responseInterceptors |
    */
   private superReq (config: Config) {
-
     const chain: [any, any] = [this.req.bind(this), undefined]
     let promise = Promise.resolve(config)
 
-    this.interceptors.request.forEach(function unshiftRequesetInterceptors (interceptor: IThenParmas) {
+    this.interceptors.request.forEach((interceptor: IThenParmas) => {
       chain.unshift(interceptor.fulfilled, interceptor.rejected)
     })
-    
-    this.interceptors.response.forEach(function pushResponseInterceptors (interceptor: IThenParmas) {
+
+    this.interceptors.response.forEach((interceptor: IThenParmas) => {
       chain.push(interceptor.fulfilled, interceptor.rejected)
     })
 
