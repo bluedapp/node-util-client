@@ -3,18 +3,30 @@ import { QueryOptions, QueryTypes } from 'sequelize'
 import Client from '@blued-core/client'
 
 export interface SequelizeConfig {
-  masterHost: string
+  master: {
+    host: string
+    port: string
+  }
+  slaves?: {
+    host: string
+    port: string
+  }[]
   username: string
   password: string
   database: string
   modelPath?: string
-  slaveHost?: string[]
   isLocal?: boolean
 }
 
 export interface MysqlConfInstance {
-  masterHost: string
-  slaveHost: string[]
+  master: {
+    host: string
+    port: string
+  }
+  slaves: {
+    host: string
+    port: string
+  }[]
   username: string
   password: string
   database: any
@@ -31,8 +43,8 @@ export type Mysql = Sequelize & {
 export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
   buildClient (key: string) {
     const {
-      masterHost,
-      slaveHost,
+      master,
+      slaves,
       username,
       password,
       database,
@@ -40,8 +52,8 @@ export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
     } = this.conf.get(key)
 
     const client = createSequelize({
-      masterHost,
-      slaveHost,
+      master,
+      slaves,
       username,
       password,
       database,
@@ -63,8 +75,8 @@ export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
  * @param {MysqlClientConfig}
  */
 export function createSequelize ({
-  masterHost,
-  slaveHost,
+  master,
+  slaves,
   username,
   password,
   database,
@@ -72,7 +84,8 @@ export function createSequelize ({
   isLocal = false,
 }: SequelizeConfig) {
   const authConfig = {
-    host: masterHost,
+    host: master.host,
+    port: master.port,
     username,
     password,
   }
@@ -80,8 +93,9 @@ export function createSequelize ({
   const sequelize = new Sequelize({
     // 如果存在从库引用，则改为主从启动方式
     replication: {
-      read: slaveHost.map(host => ({
+      read: slaves.map(({ host, port }) => ({
         host,
+        port,
         username,
         password,
       })),
