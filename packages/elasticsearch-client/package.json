@@ -1,0 +1,53 @@
+{
+  "name": "@blued-core/elasticsearch-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "build": "rm -rf dist && tsc",
+    "watch": "tsc -w",
+    "lint": "bash ./scripts/lint-staged-files.sh",
+    "start": "NODE_ENV=test node dist",
+    "start-pro": "NODE_ENV=local QCONF_FLAG=production node dist",
+    "prepare": "npm run build",
+    "fix": "cd ./node_modules/node-qconf/build/Release/ && install_name_tool -change libqconf.dylib /usr/local/qconf/lib/libqconf.dylib ./qconf.node"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blued-core/client": "0.0.11",
+    "@elastic/elasticsearch": "^7.3.0",
+    "typescript": "^3.5.3"
+  },
+  "devDependencies": {
+    "@blued-core/cache": "^1.0.2",
+    "@blued-core/qconf-conf": "^0.1.0",
+    "@commitlint/cli": "^8.1.0",
+    "@commitlint/config-conventional": "^8.1.0",
+    "@types/chai": "^4.2.0",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.7.1",
+    "@typescript-eslint/eslint-plugin": "^1.13.0",
+    "chai": "^4.2.0",
+    "commitizen": "^4.0.3",
+    "eslint": "^6.1.0",
+    "eslint-config-blued-typescript": "^1.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "husky": "^3.0.3",
+    "mocha": "^6.2.0",
+    "ts-node": "^8.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+      "pre-commit": "npm run lint && npm run test"
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

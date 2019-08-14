@@ -1,0 +1,8 @@
+node_modules/*
+logs/*
+test/*
+*.spec.js
+*.test.js
+*.spec.ts
+*.test.ts
+dist/*
