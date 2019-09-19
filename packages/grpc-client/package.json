@@ -1,0 +1,46 @@
+{
+  "name": "@blued-core/grpc-report-client",
+  "version": "0.0.2",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "mocha -r ts-node/register test/**/*.spec.ts",
+    "build": "rm -rf dist && tsc",
+    "watch": "tsc -w",
+    "start": "NODE_ENV=test node dist",
+    "start-pro": "NODE_ENV=local node dist",
+    "prepare": "npm run build"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@blued-core/client": "^0.0.11",
+    "google-protobuf": "^3.10.0-rc.1",
+    "grpc": "^1.23.3",
+    "protobufjs": "^6.8.8",
+    "typescript": "^3.4.3"
+  },
+  "devDependencies": {
+    "@blued-core/qconf-conf": "0.0.5",
+    "@commitlint/cli": "^7.5.2",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@types/chai": "^4.1.7",
+    "@types/google-protobuf": "^3.7.1",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^11.13.5",
+    "@typescript-eslint/eslint-plugin": "^1.6.0",
+    "chai": "^4.2.0",
+    "commitizen": "^3.0.7",
+    "eslint": "^5.16.0",
+    "eslint-config-blued-typescript": "^1.0.1",
+    "eslint-plugin-import": "^2.17.2",
+    "mocha": "^6.1.4",
+    "ts-node": "^8.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}
