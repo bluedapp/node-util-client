@@ -41,7 +41,7 @@ console.log(await client.getChildren('/patha')) // => ['pathb']
 console.log(await client.getData('/patha/pathb')) // => '1'
 ```
 
-### remove 
+### exists 
 
 ```typescript
 await client.create('/patha/pathb', 1)
