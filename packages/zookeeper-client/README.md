@@ -48,3 +48,11 @@ await client.create('/patha/pathb', 1)
 console.log(await client.exists('/patha/pathb')) // => true
 console.log(await client.exists('/patha/pathc')) // => false
 ```
+
+### mkdirp 
+
+```typescript
+await client.mkdirp('/patha/pathb')
+console.log(await client.exists('/patha/pathb')) // => true
+console.log(await client.exists('/patha/pathc')) // => false
+```

@@ -8,6 +8,7 @@ export interface ZookeeperClient {
   create: (path: string, value: string | number) => Promise<void>
   remove: (path: string) => Promise<void>
   exists: (path: string) => Promise<boolean>
+  mkdirp: (path: string) => Promise<string>
 }
 
 enum TaskType {
@@ -17,6 +18,7 @@ enum TaskType {
   Create,
   Remove,
   Exists,
+  Mkdirp
 }
 
 export type TaskItem = {
@@ -24,7 +26,7 @@ export type TaskItem = {
   reject: Function
   path: string
 } & ({
-  type: TaskType.GetData | TaskType.GetChildren | TaskType.Remove | TaskType.Exists
+  type: TaskType.GetData | TaskType.GetChildren | TaskType.Remove | TaskType.Exists | TaskType.Mkdirp
 } | {
   type: TaskType.SetData | TaskType.Create
   value: string | number
@@ -108,6 +110,17 @@ export default class ExceptionReportClient extends Client<ZookeeperClient, strin
           })
         }
       }),
+      mkdirp: (path: string) => new Promise((resolve, reject) => {
+        if (!init) {
+          buffer.push({ resolve, reject, path, type: TaskType.Mkdirp })
+        } else {
+          client.mkdirp(path, (error, path) => {
+            if (error) return reject(error)
+
+            resolve(path)
+          })
+        }
+      }),
     }
 
     client.once('connected', () => {
@@ -136,6 +149,8 @@ export default class ExceptionReportClient extends Client<ZookeeperClient, strin
               return taskItem.resolve(await clientUtil.remove(taskItem.path))
             case TaskType.Exists:
               return taskItem.resolve(await clientUtil.exists(taskItem.path))
+            case TaskType.Mkdirp:
+              return taskItem.resolve(await clientUtil.mkdirp(taskItem.path))
             default: throw new Error(`invalid case: ${type}`)
             }
           } catch (e) {
