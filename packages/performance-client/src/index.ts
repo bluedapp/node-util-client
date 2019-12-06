@@ -23,7 +23,7 @@ export default class PerformanceClient
     const serverSocket = dgram.createSocket('udp4')
     const { host, port, group, project } = this.conf.get(key)
 
-    let client = {
+    const client = {
       timer(path: string, val: number) {
         if (!this.dev) sendMessage(path, val, StatsdType.Timing)
       },
@@ -35,7 +35,7 @@ export default class PerformanceClient
     return {
       client,
       clean () {
-        client = null
+        serverSocket.close()
       },
     }
 
