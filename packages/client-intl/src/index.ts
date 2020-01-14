@@ -12,6 +12,7 @@ export interface ClientIntl<T extends any = any> {
   interval?: number
   keepInstanceCount?: number
   isLocal?: boolean
+  option?: Record<string, any>
 
   getClient (key: string, force?: boolean): T
   buildClient (key: string): ClientResourceIntl<T>
