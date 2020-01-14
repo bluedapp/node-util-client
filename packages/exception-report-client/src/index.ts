@@ -12,6 +12,7 @@ export default class ExceptionReportClient extends Client<typeof Sentry, string>
       Sentry.init({
         dsn: !this.isLocal && conf,
         debug: this.isLocal,
+        ...this.option,
       })
     }
     return {
