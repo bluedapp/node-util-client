@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/kafka-client",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,8 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@blued-core/client": "^0.0.11",
-    "kafka-node": "^1.6.2",
-    "typescript": "^3.4.3"
+    "kafka-node": "^1.6.2"
   },
   "devDependencies": {
     "@blued-core/normal-conf": "0.0.3",
@@ -34,7 +33,8 @@
     "eslint-config-blued-typescript": "^1.0.1",
     "eslint-plugin-import": "^2.17.2",
     "mocha": "^6.1.4",
-    "ts-node": "^8.1.0"
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.3"
   },
   "config": {
     "commitizen": {
