@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/http-client",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -18,8 +18,7 @@
   "dependencies": {
     "@blued-core/client": "^0.0.11",
     "request": "^2.88.0",
-    "request-promise-native": "^1.0.7",
-    "typescript": "^3.4.3"
+    "request-promise-native": "^1.0.7"
   },
   "devDependencies": {
     "@blued-core/qconf-conf": "0.0.5",
@@ -37,7 +36,8 @@
     "eslint-config-blued-typescript": "^1.0.1",
     "eslint-plugin-import": "^2.17.2",
     "mocha": "^6.1.4",
-    "ts-node": "^8.1.0"
+    "ts-node": "^8.1.0",
+    "typescript": "^3.4.3"
   },
   "config": {
     "commitizen": {

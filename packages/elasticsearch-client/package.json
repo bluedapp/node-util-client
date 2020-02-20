@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/elasticsearch-client",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -18,8 +18,7 @@
   "license": "ISC",
   "dependencies": {
     "@blued-core/client": "0.0.11",
-    "@elastic/elasticsearch": "^7.3.0",
-    "typescript": "^3.5.3"
+    "@elastic/elasticsearch": "^7.3.0"
   },
   "devDependencies": {
     "@blued-core/cache": "^1.0.2",
@@ -37,7 +36,8 @@
     "eslint-plugin-import": "^2.18.2",
     "husky": "^3.0.3",
     "mocha": "^6.2.0",
-    "ts-node": "^8.3.0"
+    "ts-node": "^8.3.0",
+    "typescript": "^3.5.3"
   },
   "husky": {
     "hooks": {
