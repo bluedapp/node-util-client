@@ -16,11 +16,12 @@ export interface ConfInstance {
   project: string
 }
 
+const serverSocket = dgram.createSocket('udp4')
+
 export default class PerformanceClient
   extends Client<PerformanceClientInstance, ConfInstance>
   implements PerformanceClientIntl {
   buildClient (key: string) {
-    const serverSocket = dgram.createSocket('udp4')
     const { host, port, group, project } = this.conf.get(key)
 
     const client = {
@@ -34,9 +35,7 @@ export default class PerformanceClient
 
     return {
       client,
-      clean () {
-        serverSocket.close()
-      },
+      clean () {},
     }
 
     function sendMessage (path: string, val: number, type: StatsdType) {
