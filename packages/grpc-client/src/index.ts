@@ -33,7 +33,7 @@ export class GrpcReportClient extends Client {
   getClient(): {
     report<T>(arg: T): any
   } {
-    return super.getClient('any', false)
+    return super.getClient('any', true)
   }
 
   buildClient() {
