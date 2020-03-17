@@ -30,10 +30,10 @@ export class GrpcReportClient extends Client {
     this.protoPath = protoPath
   }
 
-  getClient(): {
+  getClient(key = 'any', force = false): {
     report<T>(arg: T): any
   } {
-    return super.getClient('any', true)
+    return super.getClient(key, force)
   }
 
   buildClient() {
