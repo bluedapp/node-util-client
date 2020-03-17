@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/grpc-report-client",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
