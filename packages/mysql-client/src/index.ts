@@ -17,6 +17,7 @@ export interface SequelizeConfig {
   modelPath?: string
   isLocal?: boolean
   timezone?: string
+  maxPoolCount?: number
 }
 
 export interface MysqlConfInstance {
@@ -33,6 +34,7 @@ export interface MysqlConfInstance {
   database: any
   modelPath: any
   timezone?: string
+  maxPoolCount?: number
 }
 
 export { QueryTypes }
@@ -51,7 +53,8 @@ export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
       password,
       database,
       modelPath,
-      timezone = '+08:00'
+      timezone = '+08:00',
+      maxPoolCount = 5,
     } = this.conf.get(key)
 
     const client = createSequelize({
@@ -62,6 +65,7 @@ export default class MysqlClient extends Client<Mysql, MysqlConfInstance> {
       database,
       modelPath,
       timezone,
+      maxPoolCount,
       isLocal: this.isLocal,
     })
 
@@ -87,6 +91,7 @@ export function createSequelize ({
   modelPath = '',
   timezone,
   isLocal = false,
+  maxPoolCount = 5,
 }: SequelizeConfig) {
   const authConfig = {
     host: master.host,
@@ -111,7 +116,7 @@ export function createSequelize ({
     dialect: 'mysql',
     modelPaths: [modelPath],
     pool: {
-      max: 5,
+      max: maxPoolCount,
       min: 0,
       acquire: 30000,
       idle: 10000,
