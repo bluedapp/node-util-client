@@ -19,7 +19,12 @@ export default class HttpClient extends Client<Request, string> {
   }
 
   buildClient (key: string) {
-    const client = new Request(() => this.conf.get(key), this.interceptors)
+    const client = new Request(() => {
+      const host = this.conf.get(key)
+      if (!host) throw new Error(`conf key(${key}) 无法获取对应host`)
+        
+      return host
+    }, this.interceptors)
 
     return {
       client,
@@ -142,8 +147,9 @@ export class Request {
     requestId = getRandomRequestId(),
     ...config
   }: Config) {
+    const host = this.getHost()
+
     try {
-      const host = this.getHost()
       const results = await request({
         baseUrl: buildPath(host),
         url: removeBorderSlash(url),
