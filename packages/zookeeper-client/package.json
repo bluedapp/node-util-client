@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/zookeeper-client",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,11 +16,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "0.0.11",
+    "@blued-core/client": "^0.0.15",
+    "@blued-core/normal-conf": "^0.1.1",
     "node-zookeeper-client": "^1.0.0"
   },
   "devDependencies": {
-    "@blued-core/normal-conf": "0.0.3",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@types/chai": "^4.1.7",

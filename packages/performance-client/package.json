@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/performance-client",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,8 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.11",
-    "@blued-core/client-intl": "0.0.2"
+    "@blued-core/client": "^0.0.15",
+    "@blued-core/client-intl": "^0.0.5"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",

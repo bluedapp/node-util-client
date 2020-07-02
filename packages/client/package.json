@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/client",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,9 +15,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/cache-intl": "^0.0.4",
-    "@blued-core/client-intl": "0.0.3",
-    "@blued-core/conf-intl": "^0.0.4"
+    "@blued-core/cache-intl": "^0.0.5",
+    "@blued-core/client-intl": "^0.0.5",
+    "@blued-core/conf-intl": "^0.1.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",

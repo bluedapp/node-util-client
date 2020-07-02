@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/grpc-report-client",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,8 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.11",
-    "@blued-core/qconf-conf": "^0.1.1",
+    "@blued-core/client": "^0.0.15",
+    "@blued-core/qconf-conf": "^0.1.2",
     "google-protobuf": "^3.10.0-rc.1",
     "grpc": "^1.23.3",
     "protobufjs": "^6.8.8"

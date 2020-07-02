@@ -17,12 +17,12 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "0.0.11",
+    "@blued-core/cache": "^1.0.4",
+    "@blued-core/client": "^0.0.15",
+    "@blued-core/qconf-conf": "^0.1.2",
     "@elastic/elasticsearch": "^7.3.0"
   },
   "devDependencies": {
-    "@blued-core/cache": "^1.0.2",
-    "@blued-core/qconf-conf": "^0.1.0",
     "@commitlint/cli": "^8.1.0",
     "@commitlint/config-conventional": "^8.1.0",
     "@types/chai": "^4.2.0",

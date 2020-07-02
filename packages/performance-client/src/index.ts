@@ -58,5 +58,13 @@ function removeDot (str: string) {
  * @param str 进行转换的字符串
  */
 function translatePath (str: string) {
-  return str.replace(/\//g, '.')
+  return fixPathNumbers(str).replace(/\//g, '.')
+}
+
+/**
+ * 将路径中的数字转换成字符串 NUM，避免统计路径过多 a/b/12 -> a/b/NUM
+ * @param str 进行转换的字符串
+ */
+function fixPathNumbers (str: string) {
+  return str.replace(/\/\d+/g, '/NUM')
 }
