@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/elasticsearch-client",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -17,7 +17,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/cache": "^1.0.4",
+    "@blued-core/cache": "^1.0.5",
     "@blued-core/client": "^0.0.15",
     "@blued-core/qconf-conf": "^0.1.2",
     "@elastic/elasticsearch": "^7.3.0"
