@@ -1,5 +1,6 @@
 import Client from '@blued-core/client'
 import request, { RequestPromiseOptions } from 'request-promise-native'
+import Agent from 'agentkeepalive'
 import InterceptorManager, { IThenParmas } from './interceptorManager'
 import { DataRequestError } from './error'
 import { getRandomRequestId } from './util'
@@ -7,6 +8,7 @@ import buildPath, { removeBorderSlash } from './url-util'
 
 export type Config = RequestPromiseOptions & { url: string, requestId?: string }
 
+const agent = new Agent({ keepAlive: true })
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 export default class HttpClient extends Client<Request, string> {
@@ -22,7 +24,7 @@ export default class HttpClient extends Client<Request, string> {
     const client = new Request(() => {
       const host = this.conf.get(key)
       if (!host) throw new Error(`conf key(${key}) 无法获取对应host`)
-        
+
       return host
     }, this.interceptors)
 
@@ -158,6 +160,7 @@ export class Request {
           'X-Request-ID': requestId,
         },
         json: true,
+        agent,
         ...config,
       })
 
