@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/client-intl",
-  "version": "0.0.5",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/cache-intl": "^0.0.5",
+    "@blued-core/cache-intl": "^0.1.0",
     "@blued-core/conf-intl": "^0.1.1"
   },
   "devDependencies": {
