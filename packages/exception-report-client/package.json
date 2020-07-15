@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/exception-report-client",
-  "version": "0.0.8",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,8 +15,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.15",
-    "@blued-core/client-intl": "0.0.5",
+    "@blued-core/client": "^0.1.0",
+    "@blued-core/client-intl": "^0.1.0",
     "@sentry/node": "^5.3.0"
   },
   "devDependencies": {
