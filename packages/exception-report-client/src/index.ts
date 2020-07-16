@@ -15,12 +15,12 @@ export default class ExceptionReportClient extends Client<typeof Sentry, string>
       Sentry.init({
         dsn: !this.isLocal && conf,
         debug: this.isLocal,
-        beforeSend: (e, hint) => {
-          const error = hint.originalException || e
-          if (EventCache.has(error)) {
-            return EventCache.get(error) <= 0 ? e : null
+        beforeSend: (e, hints) => {
+          const error = getErrorKey(hints.originalException)
+          if (EventCache.has(error) && Date.now() - EventCache.get(error) < ExpireSecond * 1e3) {
+            return null
           } else {
-            EventCache.set(error, ExpireSecond)
+            EventCache.set(error, Date.now())
             return e
           }
         },
@@ -30,10 +30,8 @@ export default class ExceptionReportClient extends Client<typeof Sentry, string>
       // 处理缓存错误的有效期
       setInterval(() => {
         EventCache.forEach((v, k) => {
-          if (v <= 0) {
+          if (Date.now() - v >= ExpireSecond * 1e3) {
             EventCache.delete(k)
-          } else {
-            EventCache.set(k, v - LoopSecond)
           }
         })
       }, LoopSecond * 1e3)
@@ -44,4 +42,8 @@ export default class ExceptionReportClient extends Client<typeof Sentry, string>
       clean () { },
     }
   }
+}
+
+function getErrorKey (e: string|Error) {
+  return typeof e === 'string' ? e : [e.name, e.message, e.stack].join(' ')
 }
