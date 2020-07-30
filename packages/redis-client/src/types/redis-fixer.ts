@@ -53,6 +53,20 @@ export interface OverloadedLastCommand<T1, T2, U, R> {
   (...args: (T1 | T2)[]): Promise<R>
 }
 
+export type Callback<T> = (err: Error | null, reply: T) => void;
+
+export interface Multi extends RedisPromisifyClient {
+  exec(cb?: Callback<any[]>): boolean;
+  EXEC(cb?: Callback<any[]>): boolean;
+
+  exec_atomic(cb?: Callback<any[]>): boolean;
+  EXEC_ATOMIC(cb?: Callback<any[]>): boolean;
+}
+
+export let Multi: new () => Multi;
+
+
+
 export interface RedisPromisifyClient {
   /**
    * Add one or more geospatial items in the geospatial index represented using a sorted set.
@@ -1117,4 +1131,10 @@ export interface RedisPromisifyClient {
    */
   zscore(key: string, member: string | number): Promise<string>
   ZSCORE(key: string, member: string | number): Promise<string>
+
+  /**
+     * Mark the start of a transaction block.
+     */
+  multi(args?: Array<Array<string | number | Callback<any>>>): Multi;
+  MULTI(args?: Array<Array<string | number | Callback<any>>>): Multi;
 }
