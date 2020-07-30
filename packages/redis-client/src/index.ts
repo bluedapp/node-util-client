@@ -47,8 +47,14 @@ function build (target: any): RedisPromisifyClient {
   list.forEach((method: any) => {
     const func = target[method]
     if (typeof func === 'function') {
-      target[method] = promisify(func)
-      target[method.toUpperCase()] = promisify(func)
+      if (method === 'multi') {
+        target[method] = func
+        target[method.toUpperCase()] = func
+      } else {
+        target[method] = promisify(func)
+        target[method.toUpperCase()] = promisify(func)
+      }
+      
     }
   })
 
