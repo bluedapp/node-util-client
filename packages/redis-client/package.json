@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@blued-core/client": "^0.0.15",
+    "@blued-core/exception-report-client": "^0.1.1",
     "redis": "^2.8.0",
     "redis-commands": "^1.4.0"
   },
