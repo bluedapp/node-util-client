@@ -5,7 +5,7 @@ import { QconfHost } from '@blued-core/qconf-conf'
 import HttpClient from '../../src/index'
 
 describe('normal', () => {
-  it(`function return string`, async () => {
+  it(`get`, async () => {
     const client = new HttpClient(new QconfHost({
       key: '/blued/service/live/oversea_tools_host',
     }), new Map())
@@ -27,28 +27,26 @@ describe('normal', () => {
         uid: 123,
       },
     })
+    // console.log(11, res1, res2)
     expect(res1).to.be.an('object')
     expect(res2).to.be.an('object')
   })
 
-  it(`inspector normal`, async () => {
+  it(`interceptors`, async () => {
     const client = new HttpClient(new QconfHost({
       key: '/blued/service/live/oversea_tools_host',
     }), new Map())
 
-    const request = client.getClient('key')
-
-    // request.
-
-    client.interceptors.request.use(function fulfilledHandler (config: any) {
+    client.interceptors.request.use((config: any) => {
       expect(config).to.be.an('object')
       return config
     })
 
-    client.interceptors.response.use(function fulfilledHandler (res: any) {
+    client.interceptors.response.use((res: any) => {
       expect(res).to.be.an('object')
       return res
     })
+    const request = client.getClient('key')
 
     const res1 = await request.get({
       url: '/level/',
@@ -57,6 +55,14 @@ describe('normal', () => {
       },
     })
 
+    const res2 = await request.getData({
+      url: '/level/',
+      qs: {
+        uid: 123,
+      },
+    })
+
     expect(res1).to.be.an('object')
+    expect(res2).to.be.an('object')
   })
 })

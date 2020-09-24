@@ -1,18 +1,18 @@
-export interface IThenParmas {
+export interface IThenParams {
   fulfilled: any,
   rejected: any,
 }
 
 export default class InterceptorManager {
-  protected handlers: IThenParmas[] = []
+  protected handlers: IThenParams[] = []
 
   public use = (fulfilled: any, rejected?: any): number => {
-    const params: IThenParmas = {
+    const params: IThenParams = {
       fulfilled,
-      rejected
+      rejected,
     }
     this.handlers.push(params)
-    return this,this.handlers.length - 1
+    return this.handlers.length - 1
   }
 
   public eject = (index: number): void => {
@@ -20,7 +20,7 @@ export default class InterceptorManager {
   }
 
   public forEach = (fn: any): void => {
-    this.handlers.forEach(function forEachHandler (h) {
+    this.handlers.forEach(h => {
       if (h !== null) fn(h)
     })
   }

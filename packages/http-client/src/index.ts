@@ -1,14 +1,19 @@
 import Client from '@blued-core/client'
-import request, { RequestPromiseOptions } from 'request-promise-native'
-import Agent from 'agentkeepalive'
-import InterceptorManager, { IThenParmas } from './interceptorManager'
+import HttpAgent from 'agentkeepalive'
+import axios from 'axios'
+import InterceptorManager, { IThenParams } from './interceptor-manager'
 import { DataRequestError } from './error'
 import { getRandomRequestId } from './util'
 import buildPath, { removeBorderSlash } from './url-util'
 
-export type Config = RequestPromiseOptions & { url: string, requestId?: string }
+export interface Config {
+   url: string,
+   requestId?: string,
+   headers?: { [key: string]: string},
+   [key: string]: any
+}
 
-const agent = new Agent({ keepAlive: true })
+const { HttpsAgent } = HttpAgent
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 export default class HttpClient extends Client<Request, string> {
@@ -105,7 +110,7 @@ export class Request {
     private interceptors: {
       request: InterceptorManager
       response: InterceptorManager
-    }
+    },
   ) {
     accessMethod.forEach((method: 'get' | 'post' | 'put' | 'delete') => {
       this[method] = (config: Config) => this.superReq({
@@ -124,11 +129,11 @@ export class Request {
     const chain: [any, any] = [this.req.bind(this), undefined]
     let promise = Promise.resolve(config)
 
-    this.interceptors.request.forEach((interceptor: IThenParmas) => {
+    this.interceptors.request.forEach((interceptor: IThenParams) => {
       chain.unshift(interceptor.fulfilled, interceptor.rejected)
     })
 
-    this.interceptors.response.forEach((interceptor: IThenParmas) => {
+    this.interceptors.response.forEach((interceptor: IThenParams) => {
       chain.push(interceptor.fulfilled, interceptor.rejected)
     })
 
@@ -152,19 +157,32 @@ export class Request {
     const host = this.getHost()
 
     try {
-      const results = await request({
-        baseUrl: buildPath(host),
+      let params = {}
+      let data = {}
+      if (config.qs) {
+        params = config.qs
+        delete config.qs
+      }
+      if (config.body) {
+        data = config.body
+        delete config.body
+      }
+
+      const results = await axios.request({
         url: removeBorderSlash(url),
+        baseURL: buildPath(host),
         headers: {
           ...headers,
           'X-Request-ID': requestId,
         },
-        json: true,
-        agent,
+        httpAgent: new HttpAgent({ keepAlive: true }),
+        httpsAgent: new HttpsAgent({ keepAlive: true }),
+        params,
+        data,
         ...config,
       })
 
-      return results
+      return results.data
     } catch (e) {
       if (e.requestId) {
         throw e
@@ -174,7 +192,7 @@ export class Request {
           e.error,
           e.statusCode,
           e.error ? e.error.code : 500,
-          `url:[${url}] message:[${e.message}]`
+          `url:[${url}] message:[${e.message}]`,
         )
       }
     }
