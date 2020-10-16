@@ -27,7 +27,7 @@ describe('normal', () => {
         uid: 123,
       },
     })
-    // console.log(11, res1, res2)
+
     expect(res1).to.be.an('object')
     expect(res2).to.be.an('object')
   })

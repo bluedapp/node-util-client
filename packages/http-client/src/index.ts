@@ -14,6 +14,8 @@ export interface Config {
 }
 
 const { HttpsAgent } = HttpAgent
+const httpAgent = new HttpAgent({ keepAlive: true })
+const httpsAgent = new HttpsAgent({ keepAlive: true })
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 export default class HttpClient extends Client<Request, string> {
@@ -175,8 +177,8 @@ export class Request {
           ...headers,
           'X-Request-ID': requestId,
         },
-        httpAgent: new HttpAgent({ keepAlive: true }),
-        httpsAgent: new HttpsAgent({ keepAlive: true }),
+        httpAgent,
+        httpsAgent,
         params,
         data,
         ...config,
