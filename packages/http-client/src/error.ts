@@ -14,7 +14,9 @@ export class DataRequestError extends Error {
     public response: any,
     public statusCode: number,
     public errorCode: number,
-    public message: string
+    public message: string,
+    public qs: any,
+    public body: any,
   ) {
     super(`request_id: [${requestId}] status: [${statusCode}] message: [${message}]`)
   }

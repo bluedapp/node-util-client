@@ -182,6 +182,19 @@ export class Request {
         params,
         data,
         ...config,
+      }).catch(e => {
+        if (e.response && e.response.data) {
+          throw new DataRequestError(
+            requestId,
+            e.response.data,
+            e.response.status,
+            e.response.data.code || 500,
+            `url:[${url}] message:[${e.response.data.message}]`,
+            params,
+            data,
+          )
+        }
+        throw e
       })
 
       return results.data
@@ -191,10 +204,12 @@ export class Request {
       } else {
         throw new DataRequestError(
           requestId,
-          e.error,
-          e.statusCode,
-          e.error ? e.error.code : 500,
+          { code: 500, msg: e.name },
+          500,
+          500,
           `url:[${url}] message:[${e.message}]`,
+          e.config.params,
+          e.config.data,
         )
       }
     }
