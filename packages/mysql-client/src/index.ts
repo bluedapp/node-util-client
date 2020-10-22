@@ -1,8 +1,6 @@
 import { Sequelize } from 'sequelize-typescript'
-import sequelize from 'sequelize'
+import { QueryTypes, QueryOptions } from 'sequelize'
 import Client from '@blued-core/client'
-
-const { QueryTypes } = sequelize
 
 export interface SequelizeConfig {
   master: {
@@ -39,10 +37,10 @@ export interface MysqlConfInstance {
   maxPoolCount?: number
 }
 
-export { Sequelize, sequelize, QueryTypes }
+export { QueryTypes }
 
 export type Mysql = Sequelize & {
-  query (sql: string, options?: sequelize.QueryOptions): Promise<any>
+  query (sql: string, options?: QueryOptions): Promise<any>
   close (): void
 }
 
