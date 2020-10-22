@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/mysql-client",
-  "version": "2.0.0",
+  "version": "1.1.5",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -16,10 +16,8 @@
   "license": "ISC",
   "dependencies": {
     "@blued-core/client": "^0.0.15",
-    "mysql2": "^1.6.5"
-  },
-  "peerDependencies": {
-    "sequelize": "^5.15.1",
+    "mysql2": "^1.6.5",
+    "sequelize": "^4.44.0",
     "sequelize-typescript": "^0.6.9"
   },
   "devDependencies": {
