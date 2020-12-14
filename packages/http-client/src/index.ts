@@ -171,7 +171,7 @@ export class Request {
       }
 
       // 过滤 undefined
-      const newHeaders = JSON.parse(JSON.stringify(headers))
+      const newHeaders = headers ? JSON.parse(JSON.stringify(headers)) : {}
 
       const results = await axios.request({
         url: removeBorderSlash(url),
