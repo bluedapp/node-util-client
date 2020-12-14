@@ -170,11 +170,14 @@ export class Request {
         delete config.body
       }
 
+      // 过滤 undefined
+      const newHeaders = JSON.parse(JSON.stringify(headers))
+
       const results = await axios.request({
         url: removeBorderSlash(url),
         baseURL: buildPath(host),
         headers: {
-          ...headers,
+          ...newHeaders,
           'X-Request-ID': requestId,
         },
         httpAgent,
@@ -202,6 +205,7 @@ export class Request {
       if (e.requestId) {
         throw e
       } else {
+        e.config = e.config || {}
         throw new DataRequestError(
           requestId,
           { code: 500, msg: e.name },
