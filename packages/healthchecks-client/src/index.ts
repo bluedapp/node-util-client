@@ -17,7 +17,7 @@ export class Ping {
     const checkId = this.getCheckId ? this.getCheckId() : null
     const path = checkId ? `ping/${checkId}` : null
     if (!baseURL || !path) {
-      console.warn('[healthchecks-ping-client] ping not avaliable.', { baseURL, path })
+      console.warn('[healthchecks-client] ping not avaliable.', { baseURL, path })
       return
     }
     const url = path + (Number.isInteger(signal) || signal ? `/${signal}` : '')
@@ -36,7 +36,7 @@ export class Ping {
         return await axios({ url, baseURL, method: 'get', timeout: this.timeout })
       }
     } catch (e) {
-      console.warn(`[healthchecks-ping-client] Ping ${url} error =>`, e.stack)
+      console.warn(`[healthchecks-client] Ping ${url} error =>`, e.stack)
     }
   }
 
@@ -77,7 +77,7 @@ export function createPingClient({
     for (const key of Object.keys(checks)) {
       clients[key] = new Ping()
     }
-    console.warn('[healthchecks-ping-client] baseURL not found.')
+    console.warn('[healthchecks-client] baseURL not found.')
   }
   return clients
 }

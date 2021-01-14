@@ -1,4 +1,4 @@
-## healthchecks-ping-client
+## healthchecks-client
 
 
 ### 示例

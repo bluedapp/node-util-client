@@ -1,6 +1,6 @@
 {
-  "name": "@blued-core/healthchecks-ping-client",
-  "version": "0.0.1",
+  "name": "@blued-core/healthchecks-client",
+  "version": "0.1.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
