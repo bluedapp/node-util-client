@@ -12,6 +12,10 @@ export class Ping {
     this.timeout = timeout || 3000
   }
 
+  setTimeout(timeout: number) {
+    this.timeout = timeout || 3000
+  }
+
   async request(signal: string | number, payload?: any) {
     const baseURL = this.getBaseURL ? this.getBaseURL() : null
     const checkId = this.getCheckId ? this.getCheckId() : null
@@ -84,11 +88,20 @@ export function createPingClient({
 
 export function createWrapper(config: PingClientConfig) {
   const pingClient = createPingClient(config)
-  return (func: Function, name: string) => async (): Promise<void> => {
+  return (func: Function, name: string, onlyPing?: boolean, timeout?: number) => async (): Promise<void> => {
     try {
-      await pingClient[name].start()
+      if (timeout) {
+        pingClient[name].setTimeout(timeout)
+      }
+      if (onlyPing) {
+        await pingClient[name].ping()
+      } else {
+        await pingClient[name].start()
+      }
       await func()
-      await pingClient[name].ping()
+      if (!onlyPing) {
+        await pingClient[name].ping()
+      }
     } catch (e) {
       await pingClient[name].fail({ code: e.code || 0, message: e.message, stack: e.stack })
     }
