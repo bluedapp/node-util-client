@@ -1,1 +1,18 @@
 extends: blued-typescript
+
+rules:
+  import/extensions:
+    - error
+    - ignorePackages
+    -
+      ts: never
+      js: never
+      json: never
+
+settings:
+  import/resolver:
+    node:
+      extensions:
+        - .ts
+        - .js
+        - .json

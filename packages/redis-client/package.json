@@ -1,6 +1,6 @@
 {
   "name": "@blued-core/redis-client",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
@@ -15,15 +15,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@blued-core/client": "^0.0.15",
+    "@blued-core/client": "^0.1.1",
     "redis": "^2.8.0",
     "redis-commands": "^1.4.0"
   },
   "devDependencies": {
+    "@blued-core/redis-conf": "^0.1.2",
     "@commitlint/cli": "^7.5.2",
     "@commitlint/config-conventional": "^7.5.0",
     "@types/chai": "^4.1.7",
-    "@types/mocha": "^5.2.6",
+    "@types/mocha": "^5.2.7",
     "@types/node": "^11.13.4",
     "@types/redis": "^2.8.12",
     "@typescript-eslint/eslint-plugin": "^1.6.0",

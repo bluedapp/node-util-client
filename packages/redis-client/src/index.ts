@@ -12,7 +12,14 @@ export interface RedisConfInstance {
 export default class RedisClient extends Client<RedisPromisifyClient, RedisConfInstance> {
   buildClient (key: string) {
     const { host, port } = this.conf.get(key)
-    const client = createRedisClient(host, Number(port))
+
+    // 增加回调方法
+    let cb = () => {}
+    if (this.option.cb && typeof this.option.cb === 'function') {
+      ({ cb } = this.option)
+    }
+
+    const client = createRedisClient(host, Number(port), cb)
 
     return {
       client,
@@ -29,11 +36,11 @@ export default class RedisClient extends Client<RedisPromisifyClient, RedisConfI
  * @param {number} port 创建链接的端口
  * @return {RedisClient}
  */
-function createRedisClient (host: string, port = 6379) {
+function createRedisClient (host: string, port = 6379, cb: Function) {
   const redisClient = redis.createClient(port, host)
 
   // build promisify methods
-  const redisPromisifyClient = build(redisClient)
+  const redisPromisifyClient = build(redisClient, cb)
 
   return redisPromisifyClient
 }
@@ -43,20 +50,45 @@ function createRedisClient (host: string, port = 6379) {
  * @param {any} target RedisClient
  * @return {any}
  */
-function build (target: any): RedisPromisifyClient {
+function build (target: any, cb: Function): RedisPromisifyClient {
   list.forEach((method: any) => {
     const func = target[method]
     if (typeof func === 'function') {
-      if (method === 'multi') {
-        target[method] = func
-        target[method.toUpperCase()] = func
+      const promisifyFn = promisify(func).bind(target)
+      if (['multi'].includes(method)) {
+        target[method] = recordMultiDecorator(func.bind(target), cb)
+        target[method.toUpperCase()] = recordMultiDecorator(func.bind(target), cb)
+      } else if (['info', 'quit'].includes(method)) {
+        target[method] = promisifyFn
+        target[method.toUpperCase()] = promisifyFn
       } else {
-        target[method] = promisify(func)
-        target[method.toUpperCase()] = promisify(func)
+        target[method] = recordDecorator(promisifyFn, cb)
+        target[method.toUpperCase()] = recordDecorator(promisifyFn, cb)
       }
-      
     }
   })
 
   return target
+}
+
+/**
+ * 使用高阶函数装饰函数
+ * @param {function} 原函数
+ * @returns {any}
+ */
+function recordDecorator(wrapped: Function, cb: Function) {
+  return async (...args: any[]) => {
+    const name = wrapped.name.replace('bound ', '')
+    const result = await wrapped(...args)
+    cb(name, args, result)
+    return result
+  }
+}
+
+function recordMultiDecorator(wrapped: Function, cb: Function) {
+  return (...args: any[]) => {
+    const name = wrapped.name.replace('bound ', '')
+    cb(name, args)
+    return wrapped(...args)
+  }
 }
