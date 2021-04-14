@@ -16,7 +16,7 @@ export default abstract class Client<
     public isLocal = false,
     public interval = 1000,
     public keepInstanceCount = suggestInstanceCount,
-    public option = {}
+    public option: Record<string, any> = {},
   ) {
     if (keepInstanceCount < suggestInstanceCount) console.warn(`suggest: keep instance count larger than ${suggestInstanceCount}`)
   }
