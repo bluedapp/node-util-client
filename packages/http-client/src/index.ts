@@ -189,6 +189,7 @@ export class Request {
         httpsAgent,
         params,
         data,
+        timeout: 5000,
         ...config,
       }).catch(e => {
         if (e.response && e.response.data) {
