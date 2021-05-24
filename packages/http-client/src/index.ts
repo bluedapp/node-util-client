@@ -13,9 +13,14 @@ export interface Config {
    [key: string]: any
 }
 
+const httpAgentConfig = {
+  keepAlive: true,
+  freeSocketTimeout: 4000,
+}
+
 const { HttpsAgent } = HttpAgent
-const httpAgent = new HttpAgent({ keepAlive: true })
-const httpsAgent = new HttpsAgent({ keepAlive: true })
+const httpAgent = new HttpAgent(httpAgentConfig)
+const httpsAgent = new HttpsAgent(httpAgentConfig)
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 export default class HttpClient extends Client<Request, string> {
