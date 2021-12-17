@@ -198,7 +198,7 @@ export class Request {
             e.response.data,
             e.response.status,
             e.response.data.code || 500,
-            `url:[${url}] message:[${e.response.data.message}]`,
+            `url:[${host}${url}] message:[${e.response.data.message}]`,
             params,
             data,
           )
@@ -217,7 +217,7 @@ export class Request {
           { code: 500, msg: e.name },
           500,
           500,
-          `url:[${url}] message:[${e.message}]`,
+          `url:[${host}${url}] message:[${e.message}]`,
           e.config.params,
           e.config.data,
         )
