@@ -198,7 +198,7 @@ export class Request {
             e.response.data,
             e.response.status,
             e.response.data.code || 500,
-            `url:[${host}${url}] message:[${e.response.data.message}]`,
+            `url:[${buildPath(buildPath(host), removeBorderSlash(url))}] message:[${e.response.data.message}]`,
             params,
             data,
           )

@@ -15,7 +15,7 @@ describe('normal', () => {
     // request.
 
     const res1 = await request.get({
-      url: '/level/',
+      url: '/level',
       qs: {
         uid: 123,
       },
