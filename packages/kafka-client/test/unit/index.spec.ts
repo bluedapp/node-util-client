@@ -1,19 +1,24 @@
-/* eslint-disable import/no-extraneous-dependencies */
-
-import { NormalConf } from '@blued-core/normal-conf'
+/* eslint-disable */
+import { it } from 'mocha'
+import { expect } from 'chai'
+import { QconfConf } from '@blued-core/qconf-conf'
 import KafkaClient from '../../src'
 
-const conf = new NormalConf({
-  test: 'xxx',
+const conf = new QconfConf({
+  a: 'xxx',
 })
 
 const kafkaClient = new KafkaClient(conf, new Map())
+const aKafkaClient = () => kafkaClient.getClient('a')
 
 const randomId = () => (Math.random() * 1e6).toString(32)
 
-setInterval(() => {
-  const rid = randomId()
-  kafkaClient.getClient('test').send('live-log', `text-${rid}`)
-  console.log(`send message: ${rid}`)
-}, 500)
-
+describe('kafka', () => {
+  it('log', () => {
+    const rid = randomId()
+    console.log(aKafkaClient())
+    aKafkaClient().send('test-001', `text-${rid}`)
+    console.log(`send message: ${rid}`)
+    expect(rid).to.be.string
+  })
+})

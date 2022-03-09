@@ -1,4 +1,4 @@
-import { Client as BaseClient, Producer as BaseProducer } from 'kafka-node'
+import { KafkaClient as BaseClient, Producer as BaseProducer } from 'kafka-node'
 import Client from '@blued-core/client'
 
 export interface Kafka {
@@ -27,44 +27,49 @@ const defaultKey = ''
 const defaultPartition = 0
 const defaultAttributes = 2
 
-let clientStatus = false
-const messageBuffer: Payloads[] = []
-let client: BaseClient | null = null
-let producer: BaseProducer | null = null
+// support multiple kafka servers
+const clientStatusObj: Record<string, boolean> = {}
+const messageBufferObj: Record<string, Payloads[]> = {}
+const clientObj: Record<string, BaseClient> = {}
+const producerObj: Record<string, BaseProducer> = {}
+const isNil = (value: any) => value === undefined || value === null
 
 export default class KafkaClient extends Client<Kafka, string> {
-  buildClient(key: string) {
-    const confStr = this.conf.get(key)
+  buildClient(kafkaKey: string) {
+    if (isNil(clientStatusObj[kafkaKey])) clientStatusObj[kafkaKey] = false
+    if (isNil(messageBufferObj[kafkaKey])) messageBufferObj[kafkaKey] = []
 
-    if (client === null) {
-      client = new BaseClient(confStr)
+    if (isNil(clientObj[kafkaKey])) {
+      const confStr = this.conf.get(kafkaKey)
+      const kafkaHost = confStr.split(',').map(host => `${host}:9092`).join(',')
+      clientObj[kafkaKey] = new BaseClient({ kafkaHost })
     }
-    if (producer === null) {
-      producer = new BaseProducer(client)
+    if (isNil(producerObj[kafkaKey])) {
+      producerObj[kafkaKey] = new BaseProducer(clientObj[kafkaKey])
     }
 
     // only listen event when client not ready
-    if (!clientStatus) {
+    if (!clientStatusObj[kafkaKey]) {
       const readyEventHandler = () => {
-        if (!clientStatus) {
-          clientStatus = true
+        if (!clientStatusObj[kafkaKey]) {
+          clientStatusObj[kafkaKey] = true
 
-          if (messageBuffer.length > 0) {
-            if (producer === null) return
+          if (messageBufferObj[kafkaKey].length > 0) {
+            if (producerObj[kafkaKey] === null) return
 
-            messageBuffer.forEach(message => {
-              producer.send([message], (error: Error) => {
+            messageBufferObj[kafkaKey].forEach(message => {
+              producerObj[kafkaKey].send([message], (error: Error) => {
                 if (error) console.error(error)
               })
             })
 
             // clean buffer when send message complete
-            messageBuffer.length = 0
+            messageBufferObj[kafkaKey].length = 0
           }
         }
       }
 
-      producer.on('ready', readyEventHandler)
+      producerObj[kafkaKey].on('ready', readyEventHandler)
     }
 
     return {
@@ -89,22 +94,23 @@ export default class KafkaClient extends Client<Kafka, string> {
             // default: 0
             attributes,
           }
-          if (clientStatus) {
-            producer.send([payloads], (error: Error) => {
+          if (clientStatusObj[kafkaKey]) {
+            producerObj[kafkaKey].send([payloads], (error: Error) => {
               if (error) console.error(error)
             })
           } else {
-            messageBuffer.push(payloads)
+            messageBufferObj[kafkaKey].push(payloads)
           }
         },
       },
       clean () {
         // force clean buffer when rebuild client
-        if (!clientStatus && messageBuffer.length > 0) {
-          messageBuffer.length = 0
+        if (!clientStatusObj[kafkaKey] && messageBufferObj[kafkaKey].length > 0) {
+          messageBufferObj[kafkaKey].length = 0
         }
-        // producer.close()
-        // client.close()
+
+        // producerObj[kafkaKey].close()
+        // clientObj[KafkaKey].close()
       },
     }
   }
