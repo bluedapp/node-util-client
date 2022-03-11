@@ -23,6 +23,8 @@ const httpAgent = new HttpAgent(httpAgentConfig)
 const httpsAgent = new HttpsAgent(httpAgentConfig)
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
+const requestAgent = process.env.APP_USER_AGENT || ''
+
 export default class HttpClient extends Client<Request, string> {
   interceptors: {
     request: InterceptorManager
@@ -38,7 +40,7 @@ export default class HttpClient extends Client<Request, string> {
       if (!host) throw new Error(`conf key(${key}) 无法获取对应host`)
 
       return host
-    }, this.interceptors)
+    }, this.interceptors, this.option)
 
     return {
       client,
@@ -118,6 +120,7 @@ export class Request {
       request: InterceptorManager
       response: InterceptorManager
     },
+    private option: Record<string, any> = {},
   ) {
     accessMethod.forEach((method: 'get' | 'post' | 'put' | 'delete') => {
       this[method] = (config: Config) => this.superReq({
@@ -184,6 +187,7 @@ export class Request {
         headers: {
           ...newHeaders,
           'X-Request-ID': requestId,
+          'X-Request-Agent': requestAgent,
         },
         httpAgent,
         httpsAgent,
