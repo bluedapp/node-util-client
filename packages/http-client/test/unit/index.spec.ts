@@ -7,7 +7,7 @@ import HttpClient from '../../src/index'
 describe('normal', () => {
   it(`get`, async () => {
     const client = new HttpClient(new QconfHost({
-      key: '/blued/service/live/oversea_tools_host',
+      key: 'xxx',
     }), new Map())
 
     const request = client.getClient('key')
@@ -34,7 +34,7 @@ describe('normal', () => {
 
   it(`interceptors`, async () => {
     const client = new HttpClient(new QconfHost({
-      key: '/blued/service/live/oversea_tools_host',
+      key: 'xxx',
     }), new Map())
 
     client.interceptors.request.use((config: any) => {
