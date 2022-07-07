@@ -2,7 +2,7 @@ import { KafkaClient as BaseClient, Producer as BaseProducer } from 'kafka-node'
 import Client from '@blued-core/client'
 
 export interface Kafka {
-  send (topic: string, messages: string, otpions?: {
+  send (topic: string, messages: any, otpions?: {
     key: string,
     partition: number,
     attributes: number
@@ -17,7 +17,8 @@ export interface KafkaConfigs {
 
 export interface Payloads {
   topic: string
-  messages: string
+  // string[] | Array<KeyedMessage> | string | KeyedMessage
+  messages: any,
   key: string
   partition: number
   attributes: number
@@ -74,7 +75,7 @@ export default class KafkaClient extends Client<Kafka, string> {
 
     return {
       client: {
-        send (topic: string, messages: string, {
+        send (topic: string, messages: any, {
           key = defaultKey,
           partition = defaultPartition,
           attributes = defaultAttributes,
