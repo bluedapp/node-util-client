@@ -1,3 +1,4 @@
+import os from 'os'
 import Client from '@blued-core/client'
 import HttpAgent from 'agentkeepalive'
 import axios from 'axios'
@@ -24,6 +25,8 @@ const httpsAgent = new HttpsAgent(httpAgentConfig)
 const data = filterResults('data')
 const accessMethod = ['get', 'post', 'put', 'delete']
 const requestAgent = process.env.APP_USER_AGENT || ''
+const requestHost = os.hostname() || ''
+const requestIp = process.env.APP_HOST_IP || ''
 
 export default class HttpClient extends Client<Request, string> {
   interceptors: {
@@ -189,6 +192,8 @@ export class Request {
           ...newHeaders,
           'X-Request-ID': requestId,
           'X-Request-Agent': requestAgent,
+          'X-Request-Host': requestHost,
+          'X-Request-IP': requestIp,
         },
         httpAgent,
         httpsAgent,
