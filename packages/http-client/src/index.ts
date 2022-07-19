@@ -165,6 +165,7 @@ export class Request {
     ...config
   }: Config) {
     const host = this.getHost()
+    const fullUrl = buildPath(buildPath(host), removeBorderSlash(url))
 
     try {
       let params = {}
@@ -202,7 +203,7 @@ export class Request {
             e.response.data,
             e.response.status,
             e.response.data.code || 500,
-            `url:[${buildPath(buildPath(host), removeBorderSlash(url))}] message:[${e.response.data.message}]`,
+            `url:[${fullUrl}] message:[${e.response.data.message}]`,
             params,
             data,
           )
@@ -221,7 +222,7 @@ export class Request {
           { code: 500, msg: e.name },
           500,
           500,
-          `url:[${host}${url}] message:[${e.message}]`,
+          `url:[${fullUrl}] message:[${e.message}]`,
           e.config.params,
           e.config.data,
         )
