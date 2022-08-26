@@ -208,11 +208,13 @@ export class Request {
             e.response.data,
             e.response.status,
             e.response.data.code || 500,
-            `url:[${fullUrl}] message:[${e.response.data.message}]`,
+            e.response.data.message || 'Unknown Error',
+            fullUrl,
             params,
             data,
           )
         }
+
         throw e
       })
 
@@ -227,7 +229,8 @@ export class Request {
           { code: 500, msg: e.name },
           500,
           500,
-          `url:[${fullUrl}] message:[${e.message}]`,
+          e.message || 'Unknown Error',
+          fullUrl,
           e.config.params,
           e.config.data,
         )
