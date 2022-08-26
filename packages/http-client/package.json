@@ -19,7 +19,7 @@
     "@blued-core/client": "^0.1.0",
     "@blued-core/qconf-conf": "^0.1.2",
     "agentkeepalive": "^4.1.3",
-    "axios": "^0.20.0"
+    "axios": "^0.21.1"
   },
   "devDependencies": {
     "@commitlint/cli": "^7.5.2",
